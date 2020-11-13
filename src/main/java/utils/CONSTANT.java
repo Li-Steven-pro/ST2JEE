@@ -11,5 +11,5 @@ package utils;
  */
 public class CONSTANT {
     public static final String VIEW_PATH = "WEB-INF/";
-    public static final String LOGIN_VIEW_PATH = VIEW_PATH + "index.jsp";
+    public static final String LOGIN_VIEW_PATH = VIEW_PATH + "login.jsp";
 }
