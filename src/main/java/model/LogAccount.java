@@ -14,38 +14,42 @@ import javax.ejb.Stateless;
 @Stateless
 public class LogAccount {
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    // Attributs
     private String user;
     private String pwd;
     private String first_name;
     private String last_name;
-    
-    public String getUser(){
+
+    // Getters & Setters
+    public String getUser() {
         return user;
     }
-    public void setUser(String user){
+
+    public void setUser(String user) {
         this.user = user;
     }
-    
-    public String getPwd(){
+
+    public String getPwd() {
         return pwd;
     }
-    public void setPwd(String pwd){
+
+    public void setPwd(String pwd) {
         this.pwd = pwd;
     }
-    
-    public String getFirstName(){
+
+    public String getFirst_name() {
         return first_name;
     }
-    public void setFirstName(String first_name){
+
+    public void setFirst_name(String first_name) {
         this.first_name = first_name;
     }
-    
-    public String getLastName(){
+
+    public String getLast_name() {
         return last_name;
     }
-    public void setLastName(String last_name){
+
+    public void setLast_name(String last_name) {
         this.last_name = last_name;
     }
 }
