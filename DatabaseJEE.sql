@@ -2,7 +2,8 @@ DROP DATABASE IF EXISTS ST2EEDB;
 CREATE DATABASE ST2EEDB;
 USE ST2EEDB;
 
-CREATE TABLE  info_intern  (
+CREATE TABLE  info_intern  (	
+   intern_group varchar(255),
    info_intern_id  int PRIMARY KEY AUTO_INCREMENT,
    firstname  varchar(255),
    lastname  varchar(255),
@@ -53,6 +54,7 @@ CREATE TABLE  eval_sheet  (
    eval_sheet_done  boolean
 );
 
+
 ALTER TABLE  mission  ADD FOREIGN KEY ( eval_sheet_id ) REFERENCES  eval_sheet  ( eval_sheet_id );
 
 ALTER TABLE  mission  ADD FOREIGN KEY ( visit_sheet_id ) REFERENCES  visit_sheet  ( visit_sheet_id );
@@ -71,4 +73,5 @@ INSERT INTO `st2eedb`.`eval_sheet` (`eval_sheet_id`, `comments_of_supervisor`, `
 UPDATE `st2eedb`.`mission` SET `eval_sheet_id` = '1' WHERE (`mission_id` = '1');
 INSERT INTO `st2eedb`.`intern` (`intern_id`, `mission_id`, `info_intern_id`, `teacher_id`) VALUES ('1', '1', '1', '1');
 
+CREATE OR REPLACE VIEW Affichage
 
