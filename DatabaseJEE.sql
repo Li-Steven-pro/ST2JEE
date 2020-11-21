@@ -7,6 +7,7 @@ CREATE TABLE  info_intern  (
    info_intern_id  int PRIMARY KEY AUTO_INCREMENT,
    firstname  varchar(255),
    lastname  varchar(255),
+   address varchar(255),
    skills  text,
    linkedin text,
    birthday  date
@@ -26,6 +27,7 @@ CREATE TABLE  mission  (
    report_title  varchar(255),
    comments_of_the_intern  text,
    mid_internship_meeting_info  text,
+   soutenance boolean,
    key_word  text,
    eval_sheet_id  int,
    visit_sheet_id  int
@@ -73,5 +75,35 @@ INSERT INTO `st2eedb`.`eval_sheet` (`eval_sheet_id`, `comments_of_supervisor`, `
 UPDATE `st2eedb`.`mission` SET `eval_sheet_id` = '1' WHERE (`mission_id` = '1');
 INSERT INTO `st2eedb`.`intern` (`intern_id`, `mission_id`, `info_intern_id`, `teacher_id`) VALUES ('1', '1', '1', '1');
 
-CREATE OR REPLACE VIEW Affichage
+CREATE OR REPLACE VIEW Affichage AS
+	select
+    info_intern.lastname AS lastname,
+    info_intern.address AS address,
+    info_intern.intern_group AS intern_group,
+    mission.eval_sheet_id AS eval_sheet,
+    mission.visit_sheet_id as visit_sheet, 
+    mission.report_title as report_title,
+    mission.soutenance as soutenance,
+    mission.start_mission as start_mission,
+    mission.end_mission as end_mission,
+    eval_sheet.grade_tech as grade_tech,
+    eval_sheet.grade_com as grade_com,
+    visit_sheet.visit_planned as visit_planned,
+    visit_sheet.visit_done as visit_done
+    FROM
+		intern
+	LEFT OUTER JOIN teacher ON teacher.teacher_id = intern.teacher_id
+    LEFT OUTER JOIN info_intern ON info_intern.info_intern_id = intern.info_intern_id
+    LEFT OUTER JOIN mission ON mission.mission_id = intern.mission_id
+    LEFT OUTER JOIN eval_sheet ON eval_sheet.eval_sheet_id = mission.eval_sheet_id
+    LEFT OUTER JOIN visit_sheet ON visit_sheet.visit_sheet_id = mission.visit_sheet_id
+    WHERE teacher.teacher_id = 1;
+    
+    select * from Affichage;
+    
+    
+    
+    
+	
+	
 
