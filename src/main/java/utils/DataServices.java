@@ -15,7 +15,6 @@ import java.sql.Statement;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServlet;
 
 /**
  *
@@ -60,14 +59,26 @@ public class DataServices {
             url = prop.getProperty("db_url");
             user = prop.getProperty("db_user");
             pwd = prop.getProperty("db_pwd");
-            System.out.println(url);
-            //conn = DriverManager.getConnection(url,user,pwd);
+            
+            // Add driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection(url,user,pwd);
+            
+            //Test Connection
             //stmt = conn.createStatement();
-            //rs = stmt.executeQuery("SELECT * from FRIENDS");
+            //rs = stmt.executeQuery("SELECT * from teacher");
+            //while(rs.next()){
+            //    System.out.println(rs.getString("firstname"));
+            //}
+            
             return conn;
         }
         catch (IOException ex) {
                 Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
         
