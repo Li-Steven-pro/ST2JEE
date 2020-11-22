@@ -1,5 +1,10 @@
+DROP USER 'adm'@'localhost';
+CREATE USER 'adm'@'localhost' IDENTIFIED BY 'adm';
+
 DROP DATABASE IF EXISTS ST2EEDB;
 CREATE DATABASE ST2EEDB;
+GRANT ALL PRIVILEGES ON st2eedb.* TO 'adm'@'localhost'  WITH GRANT OPTION;
+
 USE ST2EEDB;
 
 CREATE TABLE  info_intern  (	
@@ -99,8 +104,7 @@ CREATE OR REPLACE VIEW Affichage AS
     LEFT OUTER JOIN visit_sheet ON visit_sheet.visit_sheet_id = mission.visit_sheet_id
     WHERE teacher.teacher_id = 1;
     
-    select * from Affichage;
-    
+
     
     
     
