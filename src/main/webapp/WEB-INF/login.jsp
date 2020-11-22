@@ -13,5 +13,14 @@
     </head>
     <body>
         <h1>Simple login</h1>
+        
+        <c:if test="${errMsg != null}">
+            <c:out value="${errMsg}" />
+        </c:if>
+        <form name="form1" method="post" action="login">
+            Login : <input type="text" name="user"/> </br>
+            <label> Password : </label> <input type="text" name="pwd" /> </br>
+            <input type="submit" name="boutonOk" value="OK" />
+        </form>
     </body>
 </html>
