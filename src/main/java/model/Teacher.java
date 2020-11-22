@@ -5,9 +5,16 @@
  */
 package model;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import utils.DataServices;
 
 /**
  *
@@ -57,15 +64,33 @@ public class Teacher extends Model{
     }
     
     public boolean access(){
-        // Process to know if the user is in the db
-        if(true){
-            have_access = true;
+        try {
+            DataServices dbs = new DataServices();
+            ResultSet rs = dbs.selectQuery("SELECT * from teacher WHERE login = '" + user + "' AND password = '" + pwd + "';");
+            if(rs.next()){
+                have_access = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Teacher.class.getName()).log(Level.SEVERE, null, ex);
         }
         return have_access;
     }
     
     public ArrayList<Intern> getAllInterns(){
         ArrayList<Intern> internsList = new ArrayList();
+        DataServices dbs = new DataServices();
+        ResultSet rs = dbs.selectQuery("SELECT * from Affichage");
+        try {
+            while(rs.next()){
+                for (int i = 1; i <= 5; i++)
+                    System.out.print(rs.getString(i) + " ");
+                 System.out.println();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Teacher.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return internsList;
     }
+    
+    
 }
