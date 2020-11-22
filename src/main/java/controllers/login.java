@@ -8,9 +8,12 @@ package controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.Teacher;
 import static utils.CONSTANT.*;
 
 /**
@@ -19,6 +22,8 @@ import static utils.CONSTANT.*;
  */
 public class login extends HttpServlet {
 
+    private Teacher User;
+    private String DeniedMsg = "Access Denied !";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -30,7 +35,7 @@ public class login extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher(LOGIN_VIEW_PATH).forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -45,7 +50,7 @@ public class login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher(LOGIN_VIEW_PATH).forward(request, response);
     }
 
     /**
@@ -59,7 +64,17 @@ public class login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        setUserFromRequest(request);
+        if(User.access()){
+            HttpSession session = request.getSession();
+            session.setAttribute("User", User);
+            request.setAttribute("internsList",User.getAllInterns());
+            request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
+        }
+        else{
+            request.setAttribute("errMsg",DeniedMsg);
+            request.getRequestDispatcher(LOGIN_VIEW_PATH).forward(request, response);
+        }
     }
 
     /**
@@ -72,4 +87,9 @@ public class login extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private void setUserFromRequest(HttpServletRequest request){
+        User = new Teacher();
+        User.setUser(request.getParameter("user"));
+        User.setPwd(request.getParameter("pwd"));
+    }
 }
