@@ -83,4 +83,41 @@ public class DataServices {
         return null;
         
     }
+    public Connection getConnection(String user, String pwd){
+        try{
+           
+            prop = new Properties();
+            //cl = Thread.currentThread().getContextClassLoader();
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("/db.properties");
+            prop.load(inputStream);
+            //is = cont.getServletContext().getResourceAsStream("/WEB-INF/db.properties");
+            //prop.load(is);
+            
+            url = prop.getProperty("db_url");
+            this.user = user;
+            this.pwd = pwd;
+            
+            // Add driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection(url,user,pwd);
+            
+            //Test Connection
+//            stmt = conn.createStatement();
+//            rs = stmt.executeQuery("SELECT * from teacher");
+//            while(rs.next()){
+//                System.out.println(rs.getString("firstname"));
+//            }
+            
+            return conn;
+        }
+        catch (IOException ex) {
+                Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+        
+    }
 }
