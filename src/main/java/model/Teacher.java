@@ -14,7 +14,7 @@ import javax.ejb.Stateless;
  * @author NicoSoOl
  */
 @Stateless
-public class Teacher {
+public class Teacher extends Model{
 
     // Attributs
     private String user;

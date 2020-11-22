@@ -13,7 +13,7 @@ import javax.ejb.Stateless;
  * @author NicoSoOl
  */
 @Stateless
-public class Intern {
+public class Intern extends Model{
 
     // Attributs
     private String group;
