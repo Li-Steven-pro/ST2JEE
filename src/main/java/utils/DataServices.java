@@ -23,43 +23,23 @@ import java.util.logging.Logger;
 public class DataServices {
     private Properties prop;
     private InputStream is = null;
-    //private ClassLoader cl;
     
     private Connection conn;
-    private Statement stmt;
-    private ResultSet rs;
     
     private String url;
     private String user;
     private String pwd;
-//
-//    public void setUrl(String url) {
-//        this.url = url;
-//    }
-//
-//    public void setUser(String user) {
-//        this.user = user;
-//    }
-//
-//    public void setPwd(String pwd) {
-//        this.pwd = pwd;
-//    }
-//    
     
     public Connection getConnection(){
         try{
            
             prop = new Properties();
-            //cl = Thread.currentThread().getContextClassLoader();
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("/db.properties");
             prop.load(inputStream);
-            //is = cont.getServletContext().getResourceAsStream("/WEB-INF/db.properties");
-            //prop.load(is);
             
             url = prop.getProperty("db_url");
             user = prop.getProperty("db_user");
             pwd = prop.getProperty("db_pwd");
-            
             // Add driver
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(url,user,pwd);
@@ -73,14 +53,23 @@ public class DataServices {
             
             return conn;
         }
-        catch (IOException ex) {
+        catch (IOException | SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
         
+    }
+    
+    public ResultSet selectQuery(String query){
+        ResultSet rs = null;
+        try {
+            Connection conn = this.getConnection();
+            Statement stmt = conn.createStatement();;
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
     }
 }
