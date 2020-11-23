@@ -21,7 +21,7 @@ import utils.DataServices;
  * @author NicoSoOl
  */
 @Stateless
-public class Teacher extends Model{
+public class Teacher extends Model {
 
     // Attributs
     private String user;
@@ -29,7 +29,7 @@ public class Teacher extends Model{
     private String first_name;
     private String last_name;
     boolean have_access = false;
-    
+
     // Getters & Setters
     public String getUser() {
         return user;
@@ -62,35 +62,39 @@ public class Teacher extends Model{
     public void setLast_name(String last_name) {
         this.last_name = last_name;
     }
-    
-    public boolean access(){
-        try {
-            DataServices dbs = new DataServices();
-            ResultSet rs = dbs.selectQuery("SELECT * from teacher WHERE login = '" + user + "' AND password = '" + pwd + "';");
-            if(rs.next()){
+
+    public boolean access() {
+//        try {
+            DataServices dbs = new DataServices(user, pwd);
+//            ResultSet rs = dbs.selectQuery("SELECT * from teacher WHERE login = '" + user + "' AND password = '" + pwd + "';");
+//            if (rs.next()) {
+//                have_access = true;
+//            }
+            if (dbs.getConnection() != null) {
                 have_access = true;
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(Teacher.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Teacher.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        System.out.println("Access : " + have_access);
         return have_access;
     }
-    
-    public ArrayList<Intern> getAllInterns(){
+
+    public ArrayList<Intern> getAllInterns() {
         ArrayList<Intern> internsList = new ArrayList();
-        DataServices dbs = new DataServices();
+        DataServices dbs = new DataServices(user, pwd);
         ResultSet rs = dbs.selectQuery("SELECT * from Affichage");
         try {
-            while(rs.next()){
-                for (int i = 1; i <= 5; i++)
+            while (rs.next()) {
+                for (int i = 1; i <= 5; i++) {
                     System.out.print(rs.getString(i) + " ");
-                 System.out.println();
+                }
+                System.out.println();
             }
         } catch (SQLException ex) {
             Logger.getLogger(Teacher.class.getName()).log(Level.SEVERE, null, ex);
         }
         return internsList;
     }
-    
-    
+
 }

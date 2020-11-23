@@ -21,52 +21,55 @@ import java.util.logging.Logger;
  * @author steve
  */
 public class DataServices {
+
     private Properties prop;
     private InputStream is = null;
-    
+
     private Connection conn;
-    
+
     private String url;
     private String user;
     private String pwd;
-    
-    public Connection getConnection(){
+
+    public DataServices(String user, String pwd) {
         try{
-           
             prop = new Properties();
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("/db.properties");
             prop.load(inputStream);
-            
+
             url = prop.getProperty("db_url");
-            user = prop.getProperty("db_user");
-            pwd = prop.getProperty("db_pwd");
+            this.user = user;
+            this.pwd = pwd;
+        } catch (IOException ex) {
+            Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public Connection getConnection() {
+        try {
             // Add driver
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(url,user,pwd);
-            
+            conn = DriverManager.getConnection(url, user, pwd);
+
             //Test Connection
-            //stmt = conn.createStatement();
-            //rs = stmt.executeQuery("SELECT * from teacher");
-            //while(rs.next()){
-            //    System.out.println(rs.getString("firstname"));
-            //}
-            
+//            Statement stmt = conn.createStatement();
+//            ResultSet rs = stmt.executeQuery("SELECT * from teacher");
+//            while(rs.next()){
+//                System.out.println(rs.getString("firstname"));
+//            }
             return conn;
-        }
-        catch (IOException | SQLException | ClassNotFoundException ex) {
-                Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (/*IOException |*/ SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-        
+
     }
 
-    
-    public ResultSet selectQuery(String query){
+    public ResultSet selectQuery(String query) {
         ResultSet rs = null;
         try {
             Connection conn = this.getConnection();
-            Statement stmt = conn.createStatement();;
-            stmt = conn.createStatement();
+            Statement stmt = conn.createStatement();
             rs = stmt.executeQuery(query);
         } catch (SQLException ex) {
             Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
