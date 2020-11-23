@@ -13,5 +13,13 @@
     </head>
     <body>
         <h1>List of interns</h1>
+        <table>
+            <c:forEach items="${internsList}" var="intern">
+                <tr>
+                    <td>${intern.last_name}</td>
+                </tr>
+
+            </c:forEach>
+        </table>
     </body>
 </html>

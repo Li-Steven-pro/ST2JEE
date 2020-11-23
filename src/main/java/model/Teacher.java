@@ -90,6 +90,11 @@ public class Teacher extends Model {
                     System.out.print(rs.getString(i) + " ");
                 }
                 System.out.println();
+                // Create intern
+                Intern intern = new Intern();
+                intern.setLast_name(rs.getString("lastname"));
+                // Add it to the list
+                internsList.add(intern);
             }
         } catch (SQLException ex) {
             Logger.getLogger(Teacher.class.getName()).log(Level.SEVERE, null, ex);
