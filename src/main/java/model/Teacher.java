@@ -24,12 +24,20 @@ import utils.DataServices;
 public class Teacher extends Model {
 
     // Attributs
+    private int id;
     private String user;
     private String pwd;
     private String first_name;
     private String last_name;
     boolean have_access = false;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     // Getters & Setters
     public String getUser() {
         return user;
@@ -72,6 +80,7 @@ public class Teacher extends Model {
 //            }
             if (dbs.getConnection() != null) {
                 have_access = true;
+                setTeacherAsUser(dbs);
             }
 //        } catch (SQLException ex) {
 //            Logger.getLogger(Teacher.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,20 +88,35 @@ public class Teacher extends Model {
         System.out.println("Access : " + have_access);
         return have_access;
     }
+    
+    public boolean setTeacherAsUser(DataServices dbs){
+        try {
+            ResultSet rs = dbs.selectQuery("SELECT * from teacher WHERE login = '" + dbs.getUser() +"';");
+            if (rs.next() == true) {
+                this.setFirst_name(rs.getString("firstname"));
+                this.setLast_name(rs.getString("lastname"));
+                this.setId(rs.getInt("teacher_id"));
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Teacher.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 
     public ArrayList<Intern> getAllInterns() {
+        
         ArrayList<Intern> internsList = new ArrayList();
+        Intern intern;
+        
         DataServices dbs = new DataServices(user, pwd);
-        ResultSet rs = dbs.selectQuery("SELECT * from Affichage");
+        ResultSet rs = dbs.selectQuery("SELECT info_intern.info_intern_id as id, intern.mission_id  from intern INNER JOIN info_intern ON info_intern.info_intern_id = intern.info_intern_id WHERE teacher_id = '" + this.getId()+"';");
         try {
             while (rs.next()) {
-                for (int i = 1; i <= 5; i++) {
-                    System.out.print(rs.getString(i) + " ");
-                }
                 System.out.println();
                 // Create intern
-                Intern intern = new Intern();
-                intern.setLast_name(rs.getString("lastname"));
+                intern = new Intern();
+                intern.setInternById(dbs,rs.getInt("id"),rs.getInt("mission_id"));
                 // Add it to the list
                 internsList.add(intern);
             }

@@ -31,6 +31,10 @@ public class DataServices {
     private String user;
     private String pwd;
 
+    public String getUser() {
+        return user;
+    }
+
     public DataServices(String user, String pwd) {
         try{
             prop = new Properties();

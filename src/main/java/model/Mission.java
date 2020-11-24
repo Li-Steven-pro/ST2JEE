@@ -5,6 +5,13 @@
  */
 package model;
 
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import utils.DataServices;
+
 
 /**
  *
@@ -12,7 +19,7 @@ package model;
  */
 public class Mission {
     
-    private static String table = "info_intern";
+    private static String table = "mission";
     private static String[] attr = 
         {"mission_id",
         "year",
@@ -31,9 +38,9 @@ public class Mission {
     // year
     private int year;
     // start_mission
-    private String startDate;
+    private Date startDate;
     // end_mission
-    private String endDate;
+    private Date endDate;
     // report_title
     private String report_title;
     // comments_of_the_intern
@@ -49,5 +56,126 @@ public class Mission {
     private EvalSheet EvalS;
     private VisitSheet VisitS;
     
-    
+    public void setMissionById(DataServices dbs,int ident){
+        try {
+            String query = "SELECT * from " + Mission.getTable() +" WHERE mission_id = '" + Integer.toString(ident)+"';";
+            ResultSet missionRS = dbs.selectQuery(query);
+            if(missionRS.next() == true ){
+                this.setId(missionRS.getInt("mission_id"));
+                this.setYear(missionRS.getInt("year"));
+                this.setStartDate(missionRS.getDate("start_mission"));
+                this.setEndDate(missionRS.getDate("end_mission"));
+                this.setReport_title(missionRS.getString("report_title"));
+                this.setComment(missionRS.getString("comments_of_the_intern"));
+                this.setSoutenance(missionRS.getBoolean("soutenance"));
+                this.setKeyWord(missionRS.getString("key_word"));
+                if (missionRS.getInt("eval_sheet_id") != 0){
+                    EvalS = new EvalSheet();
+                    EvalS.setEvalSheetById(dbs, missionRS.getInt("eval_sheet_id"));
+                }else{
+                    EvalS = null;
+                }
+                if (missionRS.getInt("visit_sheet_id") != 0){
+                    VisitS = new VisitSheet();
+                    VisitS.setVisitSheetById(dbs, missionRS.getInt("visit_sheet_id"));
+                }else{
+                    VisitS = null;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Intern.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static String getTable() {
+        return table;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getReport_title() {
+        return report_title;
+    }
+
+    public void setReport_title(String report_title) {
+        this.report_title = report_title;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getMeetingInfo() {
+        return meetingInfo;
+    }
+
+    public void setMeetingInfo(String meetingInfo) {
+        this.meetingInfo = meetingInfo;
+    }
+
+    public boolean isSoutenance() {
+        return soutenance;
+    }
+
+    public void setSoutenance(boolean soutenance) {
+        this.soutenance = soutenance;
+    }
+
+    public String getKeyWord() {
+        return keyWord;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
+    }
+
+    public EvalSheet getEvalS() {
+        return EvalS;
+    }
+
+    public void setEvalS(EvalSheet EvalS) {
+        this.EvalS = EvalS;
+    }
+
+    public VisitSheet getVisitS() {
+        return VisitS;
+    }
+
+    public void setVisitS(VisitSheet VisitS) {
+        this.VisitS = VisitS;
+    }
 }

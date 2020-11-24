@@ -5,8 +5,13 @@
  */
 package model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import utils.DataServices;
 
 /**
  *
@@ -118,4 +123,25 @@ public class Intern extends Model {
         this.mission = mission;
     }
 
+    public void setInternById(DataServices dbs,int ident,int missionID){
+        try {
+            ResultSet internRS = dbs.selectQuery("SELECT * from info_intern WHERE info_intern_id = '" + Integer.toString(ident)+"';");
+            if(internRS.next() == true ){
+                this.setId(internRS.getInt("info_intern_id"));
+                this.setGroup(internRS.getString("intern_group"));
+                this.setFirst_name(internRS.getString("firstname"));
+                this.setLast_name(internRS.getString("lastname"));
+                this.setAddress(internRS.getString("address"));
+                this.setSkills(internRS.getString("skills"));
+                this.setLinkedin(internRS.getString("linkedin"));
+                this.setBirthday(internRS.getDate("birthday"));
+                mission = new Mission();
+                mission.setMissionById(dbs, missionID);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Intern.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+   
 }
