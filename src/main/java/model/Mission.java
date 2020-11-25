@@ -12,27 +12,26 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import utils.DataServices;
 
-
 /**
  *
  * @author steve
  */
 public class Mission {
-    
+
     private static String table = "mission";
-    private static String[] attr = 
-        {"mission_id",
-        "year",
-        "start_mission",
-        "end_mission",
-        "report_title",
-        "comments_of_the_intern",
-        "mid_internship_meeting_info",
-        "soutenance",
-        "keyWord",
-        "eval_sheet_id",
-        "visit_sheet_id"};
-    
+    private static String[] attr
+            = {"mission_id",
+                "year",
+                "start_mission",
+                "end_mission",
+                "report_title",
+                "comments_of_the_intern",
+                "mid_internship_meeting_info",
+                "soutenance",
+                "keyWord",
+                "eval_sheet_id",
+                "visit_sheet_id"};
+
     // mission_id
     private int id;
     // year
@@ -44,7 +43,7 @@ public class Mission {
     // report_title
     private String report_title;
     // comments_of_the_intern
-    private String comment; 
+    private String comment;
     // mid_internship_meeting_info
     private String meetingInfo;
     // soutenance
@@ -52,18 +51,19 @@ public class Mission {
     // key_word
     private String keyWord;
     // eval_sheet_id
+    private EvalSheet evalS;
     // visit_sheet_id
-    private EvalSheet EvalS;
-    private VisitSheet VisitS;
-    
+    private VisitSheet visitS;
+
     public static String[] getAttr() {
         return attr;
     }
-    public void setMissionById(DataServices dbs,int ident){
+
+    public void setMissionById(DataServices dbs, int ident) {
         try {
-            String query = "SELECT * from " + Mission.getTable() +" WHERE mission_id = '" + Integer.toString(ident)+"';";
+            String query = "SELECT * from " + Mission.getTable() + " WHERE mission_id = '" + Integer.toString(ident) + "';";
             ResultSet missionRS = dbs.selectQuery(query);
-            if(missionRS.next() == true ){
+            if (missionRS.next() == true) {
                 this.setId(missionRS.getInt("mission_id"));
                 this.setYear(missionRS.getInt("year"));
                 this.setStartDate(missionRS.getDate("start_mission"));
@@ -72,17 +72,17 @@ public class Mission {
                 this.setComment(missionRS.getString("comments_of_the_intern"));
                 this.setSoutenance(missionRS.getBoolean("soutenance"));
                 this.setKeyWord(missionRS.getString("key_word"));
-                if (missionRS.getInt("eval_sheet_id") != 0){
-                    EvalS = new EvalSheet();
-                    EvalS.setEvalSheetById(dbs, missionRS.getInt("eval_sheet_id"));
-                }else{
-                    EvalS = null;
+                if (missionRS.getObject("eval_sheet_id") != null) {
+                    evalS = new EvalSheet();
+                    evalS.setEvalSheetById(dbs, missionRS.getInt("eval_sheet_id"));
+                } else {
+                    evalS = null;
                 }
-                if (missionRS.getInt("visit_sheet_id") != 0){
-                    VisitS = new VisitSheet();
-                    VisitS.setVisitSheetById(dbs, missionRS.getInt("visit_sheet_id"));
-                }else{
-                    VisitS = null;
+                if (missionRS.getObject("visit_sheet_id") != null) {
+                    visitS = new VisitSheet();
+                    visitS.setVisitSheetById(dbs, missionRS.getInt("visit_sheet_id"));
+                } else {
+                    visitS = null;
                 }
             }
         } catch (SQLException ex) {
@@ -167,18 +167,18 @@ public class Mission {
     }
 
     public EvalSheet getEvalS() {
-        return EvalS;
+        return evalS;
     }
 
     public void setEvalS(EvalSheet EvalS) {
-        this.EvalS = EvalS;
+        this.evalS = EvalS;
     }
 
     public VisitSheet getVisitS() {
-        return VisitS;
+        return visitS;
     }
 
     public void setVisitS(VisitSheet VisitS) {
-        this.VisitS = VisitS;
+        this.visitS = VisitS;
     }
 }
