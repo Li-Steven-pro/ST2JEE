@@ -13,8 +13,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta http-equiv="content-language" content="fr-FR"/>
         <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="style.css">
-        <link rel="stylesheet" type="text/css" href="app.css"/>
+        <link rel="stylesheet" type="text/css" href="./style.css">
+        <link rel="stylesheet" type="text/css" href="./app.css"/>
         <title>Efrei Paris - Connexion</title>
     </head>
 
@@ -23,7 +23,7 @@
             <div class="middle">
                 <div class="login-container_me the-containers">
                     <div class="header_me">
-                        <img src="efrei-paris_110x40.png" alt="Efrei Paris" class="app-logo_me"/>
+                        <img src="./efrei-paris_110x40.png" alt="Efrei Paris" class="app-logo_me"/>
                         <h2>Connexion</h2>
                     </div>
                     <form class="login-form_me" id="login-form_me"  action="login" method="post" accept-charset="UTF-8" novalidate>
