@@ -56,6 +56,9 @@ public class Mission {
     private EvalSheet EvalS;
     private VisitSheet VisitS;
     
+    public static String[] getAttr() {
+        return attr;
+    }
     public void setMissionById(DataServices dbs,int ident){
         try {
             String query = "SELECT * from " + Mission.getTable() +" WHERE mission_id = '" + Integer.toString(ident)+"';";

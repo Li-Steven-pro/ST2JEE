@@ -25,7 +25,12 @@ public class VisitSheet {
     private int id;
     // visit_planned
     private boolean planned;
+    // visit_done
+    private boolean done; 
     
+    public static String[] getAttr() {
+        return attr;
+    }
     public void setVisitSheetById(DataServices dbs,int ident){
         try {
             ResultSet visitsheetRS = dbs.selectQuery("SELECT * from " + VisitSheet.getTable() +" WHERE visit_sheet_id = '" + Integer.toString(ident)+"';");
@@ -66,6 +71,5 @@ public class VisitSheet {
     public static String getTable() {
         return table;
     }
-    // visit_done
-    private boolean done; 
+    
 }

@@ -50,6 +50,10 @@ public class Intern extends Model {
     //mission
     private Mission mission;
 
+    public static String[] getAttr() {
+        return attr;
+    }
+    
     public int getId() {
         return id;
     }
