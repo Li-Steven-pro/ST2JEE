@@ -16,12 +16,13 @@ import utils.DataServices;
  * @author steve
  */
 public class EvalSheet {
+
     static private String table = "eval_sheet";
-    private static String[] attr = 
-        {"eval_sheet_id",
-        "comments_of_supervisor",
-        "grade_tech",
-        "eval_sheet_done"};
+    private static String[] attr
+            = {"eval_sheet_id",
+                "comments_of_supervisor",
+                "grade_tech",
+                "eval_sheet_done"};
     // eval_sheet_id
     private int id;
     // comments_of_supervisor
@@ -30,15 +31,14 @@ public class EvalSheet {
     private int gradeTech;
     // grade_com
     private int gradeCom;
-    
+
     private boolean done;
     // eval_sheet_done
-    
-    
-    public void setEvalSheetById(DataServices dbs,int ident){
+
+    public void setEvalSheetById(DataServices dbs, int ident) {
         try {
-            ResultSet evalsheetRS = dbs.selectQuery("SELECT * from " + EvalSheet.getTable() +" WHERE eval_sheet_id = '" + Integer.toString(ident)+"';");
-            if(evalsheetRS.next() == true ){
+            ResultSet evalsheetRS = dbs.selectQuery("SELECT * from " + EvalSheet.getTable() + " WHERE eval_sheet_id = '" + Integer.toString(ident) + "';");
+            if (evalsheetRS.next() == true) {
                 this.setId(evalsheetRS.getInt("eval_sheet_id"));
                 this.setComment(evalsheetRS.getString("comments_of_supervisor"));
                 this.setGradeTech(evalsheetRS.getInt("grade_tech"));
@@ -49,7 +49,7 @@ public class EvalSheet {
             Logger.getLogger(Intern.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static String getTable() {
         return table;
     }

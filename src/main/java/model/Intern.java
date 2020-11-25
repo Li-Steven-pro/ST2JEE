@@ -53,7 +53,7 @@ public class Intern extends Model {
     public static String[] getAttr() {
         return attr;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -127,10 +127,10 @@ public class Intern extends Model {
         this.mission = mission;
     }
 
-    public void setInternById(DataServices dbs,int ident,int missionID){
+    public void setInternById(DataServices dbs, int ident, int missionID) {
         try {
-            ResultSet internRS = dbs.selectQuery("SELECT * from info_intern WHERE info_intern_id = '" + Integer.toString(ident)+"';");
-            if(internRS.next() == true ){
+            ResultSet internRS = dbs.selectQuery("SELECT * from info_intern WHERE info_intern_id = '" + Integer.toString(ident) + "';");
+            if (internRS.next() == true) {
                 this.setId(internRS.getInt("info_intern_id"));
                 this.setGroup(internRS.getString("intern_group"));
                 this.setFirst_name(internRS.getString("firstname"));
@@ -146,6 +146,5 @@ public class Intern extends Model {
             Logger.getLogger(Intern.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-   
+
 }

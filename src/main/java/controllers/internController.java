@@ -5,7 +5,6 @@ package controllers;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -36,7 +35,7 @@ public class internController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet internController</title>");            
+            out.println("<title>Servlet internController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet internController at " + request.getContextPath() + "</h1>");
