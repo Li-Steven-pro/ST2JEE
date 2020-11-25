@@ -1,9 +1,12 @@
 DROP USER 'adm'@'localhost';
+DROP USER 'Pixel'@'localhost';
 CREATE USER 'adm'@'localhost' IDENTIFIED BY 'adm';
+CREATE USER 'Pixel'@'localhost' IDENTIFIED BY 'jetit';
 
 DROP DATABASE IF EXISTS ST2EEDB;
 CREATE DATABASE ST2EEDB;
 GRANT ALL PRIVILEGES ON st2eedb.* TO 'adm'@'localhost'  WITH GRANT OPTION;
+GRANT SELECT, INSERT, UPDATE ON st2eedb.* TO 'Pixel'@'localhost'  WITH GRANT OPTION;
 
 USE ST2EEDB;
 
@@ -72,7 +75,7 @@ ALTER TABLE  intern  ADD FOREIGN KEY ( info_intern_id ) REFERENCES  info_intern 
 
 ALTER TABLE  intern  ADD FOREIGN KEY ( teacher_id ) REFERENCES  teacher  ( teacher_id );
 
-INSERT INTO `st2eedb`.`teacher` (`firstname`, `lastname`, `password`) VALUES ('Jean', 'Petit', 'jetit');
+INSERT INTO `st2eedb`.`teacher` (`firstname`, `lastname`, `login`, `password`) VALUES ('Jean', 'Petit', 'Pixel', 'jetit');
 INSERT INTO `st2eedb`.`info_intern` (`firstname`, `lastname`, `skills`, `birthday`) VALUES ('Murielle', 'Bagneux', 'VBA, excel', '1995-10-10');
 INSERT INTO `st2eedb`.`visit_sheet` (`visit_sheet_id`, `visit_planned`, `visit_done`) VALUES ('1', '1', '1');
 INSERT INTO `st2eedb`.`mission` (`mission_id`, `year`, `visit_sheet_id`, `report_title`, `comments_of_the_intern`, `mid_internship_meeting_info`, `key_word`) VALUES ('1', '2018', '1', 'REPORT_TEST', 'Boring stage', 'yes', 'VBA, EXCEL');

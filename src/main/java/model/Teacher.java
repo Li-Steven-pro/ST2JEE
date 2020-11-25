@@ -38,6 +38,7 @@ public class Teacher extends Model {
     public void setId(int id) {
         this.id = id;
     }
+
     // Getters & Setters
     public String getUser() {
         return user;
@@ -73,25 +74,25 @@ public class Teacher extends Model {
 
     public boolean access() {
 //        try {
-            DataServices dbs = new DataServices(user, pwd);
+        DataServices dbs = new DataServices(user, pwd);
 //            ResultSet rs = dbs.selectQuery("SELECT * from teacher WHERE login = '" + user + "' AND password = '" + pwd + "';");
 //            if (rs.next()) {
 //                have_access = true;
 //            }
-            if (dbs.getConnection() != null) {
-                have_access = true;
-                setTeacherAsUser(dbs);
-            }
+        if (dbs.getConnection() != null) {
+            have_access = true;
+            setTeacherAsUser(dbs);
+        }
 //        } catch (SQLException ex) {
 //            Logger.getLogger(Teacher.class.getName()).log(Level.SEVERE, null, ex);
 //        }
         System.out.println("Access : " + have_access);
         return have_access;
     }
-    
-    public boolean setTeacherAsUser(DataServices dbs){
+
+    public boolean setTeacherAsUser(DataServices dbs) {
         try {
-            ResultSet rs = dbs.selectQuery("SELECT * from teacher WHERE login = '" + dbs.getUser() +"';");
+            ResultSet rs = dbs.selectQuery("SELECT * from teacher WHERE login = '" + dbs.getUser() + "';");
             if (rs.next() == true) {
                 this.setFirst_name(rs.getString("firstname"));
                 this.setLast_name(rs.getString("lastname"));
@@ -105,18 +106,18 @@ public class Teacher extends Model {
     }
 
     public ArrayList<Intern> getAllInterns() {
-        
+
         ArrayList<Intern> internsList = new ArrayList();
         Intern intern;
-        
+
         DataServices dbs = new DataServices(user, pwd);
-        ResultSet rs = dbs.selectQuery("SELECT info_intern.info_intern_id as id, intern.mission_id  from intern INNER JOIN info_intern ON info_intern.info_intern_id = intern.info_intern_id WHERE teacher_id = '" + this.getId()+"';");
+        ResultSet rs = dbs.selectQuery("SELECT info_intern.info_intern_id as id, intern.mission_id as mission_id from intern INNER JOIN info_intern ON info_intern.info_intern_id = intern.info_intern_id WHERE teacher_id = '" + this.getId() + "';");
         try {
             while (rs.next()) {
                 System.out.println();
                 // Create intern
                 intern = new Intern();
-                intern.setInternById(dbs,rs.getInt("id"),rs.getInt("mission_id"));
+                intern.setInternById(dbs, rs.getInt("id"), rs.getInt("mission_id"));
                 // Add it to the list
                 internsList.add(intern);
             }

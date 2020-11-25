@@ -36,7 +36,7 @@ public class DataServices {
     }
 
     public DataServices(String user, String pwd) {
-        try{
+        try {
             prop = new Properties();
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("/db.properties");
             prop.load(inputStream);
@@ -48,7 +48,7 @@ public class DataServices {
             Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public Connection getConnection() {
         try {
             // Add driver
@@ -62,7 +62,7 @@ public class DataServices {
 //                System.out.println(rs.getString("firstname"));
 //            }
             return conn;
-        } catch (/*IOException |*/ SQLException | ClassNotFoundException ex) {
+        } catch (/*IOException |*/SQLException | ClassNotFoundException ex) {
             Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
