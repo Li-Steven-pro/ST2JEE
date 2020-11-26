@@ -106,11 +106,3 @@ CREATE OR REPLACE VIEW Affichage AS
     LEFT OUTER JOIN eval_sheet ON eval_sheet.eval_sheet_id = mission.eval_sheet_id
     LEFT OUTER JOIN visit_sheet ON visit_sheet.visit_sheet_id = mission.visit_sheet_id
     WHERE teacher.teacher_id = 1;
-    
-
-    
-    
-    
-	
-	
-

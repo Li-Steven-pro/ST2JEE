@@ -53,11 +53,6 @@
 
                 </td><!-- String -->
                 <td>
-                    <input type="checkbox" id="cdc" name="cdc"
-                           ${intern.last_name}
-                           </td>
-                    <!-- String -->
-                <td>
                     <input type="checkbox" id="fiche_visite" name="fiche_visite"
                            ${intern.mission.visitS!=null?'checked':''}/>
 
