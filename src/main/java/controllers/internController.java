@@ -7,10 +7,21 @@ package controllers;
  */
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.EvalSheet;
+import model.Intern;
+import model.Mission;
+import model.VisitSheet;
+import static utils.CONSTANT.INTERN_VIEW_PATH;
+import static utils.CONSTANT.LIST_INTERNS_VIEW_PATH;
 
 /**
  *
@@ -70,6 +81,9 @@ public class internController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+//        Intern intern = loadIntern(request);
+//        request.setAttribute("intern", intern);
+//        request.getRequestDispatcher(INTERN_VIEW_PATH).forward(request, response);
         processRequest(request, response);
     }
 
@@ -83,4 +97,52 @@ public class internController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    public Intern loadIntern(HttpServletRequest request) {
+
+        Intern in = new Intern();
+        in.setGroup(request.getParameter("GroupStudent"));
+        in.setLast_name(request.getParameter("LastNameStudent"));
+//        in.setFirst_name(request.getParameter("FirstNameStudent"));
+        in.setId(Integer.parseInt(request.getParameter("id_student")));
+        in.setAddress(request.getParameter("Adresse"));
+//        in.setSkills(request.getParameter("Skills"));
+//        in.setLinkedin(request.getParameter("Linkedin"));
+//        in.setBirthday(stringToSqlDate(request.getParameter("Birthday"),"yyyy-mm-dd"));
+        Mission mi = new Mission();
+//        mi.setId(Integer.parseInt(request.getParameter("id_mission")));
+//        mi.setYear(Integer.parseInt(request.getParameter("Year")));
+        mi.setStartDate(stringToSqlDate(request.getParameter("Debut"), "yyyy-mm-dd"));
+        mi.setEndDate(stringToSqlDate(request.getParameter("Fin"), "yyyy-mm-dd"));
+//        mi.setReport_title(request.getParameter("Report_title"));
+//        mi.setComment(request.getParameter("CommentMission"));
+//        mi.setMeetingInfo(request.getParameter("MettingInfo"));
+//        mi.setSoutenance(Boolean.parseBoolean(request.getParameter("Soutenance")));
+
+        EvalSheet es = new EvalSheet();
+//        es.setId(Integer.parseInt(request.getParameter("id_evalS")));
+//        es.setComment(request.getParameter("CommentEvalSheet"));
+        es.setGradeTech(Integer.parseInt(request.getParameter("NoteTech")));
+        es.setGradeCom(Integer.parseInt(request.getParameter("NoteCom")));
+//        es.setDone(Boolean.parseBoolean(request.getParameter("DoneEval")));
+
+        VisitSheet vs = new VisitSheet();
+//        vs.setId(Integer.parseInt(request.getParameter("id_visitS")));
+//        vs.setPlanned(Boolean.parseBoolean(request.getParameter("PlannedVisit")));
+//        vs.setDone(Boolean.parseBoolean(request.getParameter("DoneVisit")));
+
+        mi.setEvalS(es);
+        mi.setVisitS(vs);
+        in.setMission(mi);
+        return in;
+    }
+
+    public java.sql.Date stringToSqlDate(String date, String format) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        try {
+            return new java.sql.Date(dateFormat.parse(date).getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(internController.class.getName()).log(Level.SEVERE, null, ex);
+        };
+        return null;
+    }
 }

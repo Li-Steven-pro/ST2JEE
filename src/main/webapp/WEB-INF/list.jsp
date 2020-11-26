@@ -45,7 +45,7 @@
             <tr>
             <form name="TableFormIndex" method="post" action="internController">
 
-                <input type="hidden" name="id_student" value="" />
+                <input type="hidden" name="id_student" value="${intern.id}" />
                 <td><input type="text" name="GroupStudent" value=" ${intern.group}" />
 
                 </td><!-- String -->
