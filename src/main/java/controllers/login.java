@@ -69,6 +69,7 @@ public class login extends HttpServlet {
         if (User.access()) {
             HttpSession session = request.getSession();
             session.setAttribute("User", User);
+            session.setAttribute("internsList", User.getAllInterns());
             request.setAttribute("internsList", User.getAllInterns());
             request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
         } else {
