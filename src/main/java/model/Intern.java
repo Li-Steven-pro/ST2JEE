@@ -151,4 +151,13 @@ public class Intern extends Model {
         }
     }
 
+    public void ShowConsole(){
+        System.out.println("------------------------");
+        System.out.println("Intern id :" + this.getId());
+        System.out.println("Intern firtname :" + this.getFirst_name());
+        System.out.println("Intern lastname :" + this.getLast_name());
+        System.out.println("Intern group :" + this.getGroup());
+        System.out.println("Intern linkedin :" + this.getLinkedin());
+        
+    }
 }

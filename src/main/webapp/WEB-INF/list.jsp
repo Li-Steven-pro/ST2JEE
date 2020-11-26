@@ -18,9 +18,10 @@
         <td><input type="text" name="search" /></td>
         <td><input type="submit" name="search" value="Search"/></td>
     </form>
-    <form name="LogOut" method="post" action="Logout">
+    <form name="LogOut" method="post" action="logout">
         <td><input type="submit" name="detail" value="Log Out"/></td>
     </form>
+    <form name="GlobalForm" method="post" action="intern/update">
     <table>
         <tr>
             <td>Group</td>
@@ -39,68 +40,57 @@
             <td>Note technique</td>
             <td>Notet com</td>
         </tr>
-        #<c:forEach items="${internsList}" var="intern">
-
-
+        <!-- form for a single intern-->
+        <c:forEach items="${internsList}" var="intern">
             <tr>
-            <form name="TableFormIndex" method="post" action="internController">
-
                 <input type="hidden" name="id_student" value="${intern.id}" />
-                <td><input type="text" name="GroupStudent" value=" ${intern.group}" />
+                <td><input type="text" name="GroupStudent${intern.id}" value=" ${intern.group}" />
 
                 </td><!-- String -->
-                <td><input type="text" name="LastNameStudent" value=" ${intern.last_name}"   />
+                <td><input type="text" name="LastNameStudent${intern.id}" value=" ${intern.last_name}"   />
 
                 </td><!-- String -->
                 <td>
-                    <input type="checkbox" id="fiche_visite" name="fiche_visite"
+                    <input type="checkbox" id="fiche_visite" name="fiche_visite${intern.id}"
                            ${intern.mission.visitS!=null?'checked':''}/>
-
-
                 </td><!-- String -->
                 <td>
-                    <input type="checkbox" id="fiche_eval" name="fiche_eval"
+                    <input type="checkbox" id="fiche_eval" name="fiche_eval${intern.id}"
                            ${intern.mission.evalS!=null?'checked':''}/>
 
                 </td><!-- String -->
 
 
                 <td>
-                    <input type="checkbox" id="soutenance" name="soutenance" 
+                    <input type="checkbox" id="soutenance" name="soutenance${intern.id}" 
                            ${intern.mission.soutenance!=null?'checked':''}/>
 
 
                 </td><!-- String -->
                 <td>
-                    <input type="checkbox" id="plannif" name="plannif" 
+                    <input type="checkbox" id="plannif" name="plannif${intern.id}" 
                            ${intern.mission.visitS.planned!=null?'checked':''}/>
 
                 </td><!-- String -->
                 <td>
-                    <input type="checkbox" id="faite" name="faite"
+                    <input type="checkbox" id="faite" name="faite${intern.id}"
                            ${intern.mission.visitS.done!=null?'checked':''}/>
 
                 </td><!-- String -->
-                <td><input type="text" name="Debut" value="${intern.mission.startDate}" /></td><!-- String -->
-                <td><input type="text" name="Fin" value="${intern.mission.endDate}" /></td><!-- String -->
-                <td><input type="text" name="NomEntreprise" value="" /></td><!-- String -->
-                <td><input type="text" name="Mds" value="" /></td><!-- String -->
-                <td><input type="text" name="Adresse" value="${intern.address}" /></td><!-- String -->
-                <td><input type="text" name="NoteTech" value="${intern.mission.evalS.gradeTech}" /></td><!-- String -->
-                <td><input type="text" name="NoteCom" value="${intern.mission.evalS.gradeCom}" /></td><!-- String -->
-                <td><input type="submit" name="submit" value="Valid Edit"/></td>
-
-            </form>
-            <form name="Actual_intern" method="get" action="internController">
-                <input type="hidden" name="Intern" value="i" />
-                <td><input type="submit" name="detail" value="Detail"/></td>
-            </form>
-        </tr>
-        </br>
-    </c:forEach>
-    <h2>FIN, CE PROFESSEUR POSSEDE ${fn:length(internsList)} ETUDIANTS</h2>
-
-
-</table>
-
+                <td><input type="text" name="Debut${intern.id}" value="${intern.mission.startDate}" /></td><!-- String -->
+                <td><input type="text" name="Fin${intern.id}" value="${intern.mission.endDate}" /></td><!-- String -->
+                <td><input type="text" name="NomEntreprise${intern.id}" value="" /></td><!-- String -->
+                <td><input type="text" name="Mds${intern.id}" value="" /></td><!-- String -->
+                <td><input type="text" name="Adresse${intern.id}" value="${intern.address}" /></td><!-- String -->
+                <td><input type="text" name="NoteTech${intern.id}" value="${intern.mission.evalS.gradeTech}" /></td><!-- String -->
+                <td><input type="text" name="NoteCom${intern.id}" value="${intern.mission.evalS.gradeCom}" /></td><!-- String -->
+                <td><a href="<%=application.getContextPath()%>/intern/${intern.id}"/> <button type="button">Details</button></a></td>
+            </tr>
+            </br>
+        </c:forEach>
+        <c:set var="Teacher" value="User" />
+        <h2>FIN, <c:out value="${sessionScope[Teacher].last_name} ${sessionScope[Teacher].first_name}"/> POSSEDE ${fn:length(internsList)} ETUDIANTS</h2>
+    </table>
+    <input type="submit" name="UpdateAll" value="Update interns" />
+</form>
 </body>
