@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import static middleware.auth.accessController;
 import model.EvalSheet;
 import model.Intern;
 import model.Mission;
@@ -74,6 +75,7 @@ public class internController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println(request.getPathInfo());
+        accessController(request,response);
         processRequest(request, response);
     }
 
