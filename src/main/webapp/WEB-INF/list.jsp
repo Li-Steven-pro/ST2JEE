@@ -18,7 +18,7 @@
         <td><input type="text" name="search" /></td>
         <td><input type="submit" name="search" value="Search"/></td>
     </form>
-    <form name="LogOut" method="post" action="Logout">
+    <form name="LogOut" method="post" action="logout">
         <td><input type="submit" name="detail" value="Log Out"/></td>
     </form>
     <form name="GlobalForm" method="post" action="intern/update">
@@ -88,7 +88,8 @@
             </tr>
             </br>
         </c:forEach>
-        <h2>FIN, CE PROFESSEUR POSSEDE ${fn:length(internsList)} ETUDIANTS</h2>
+        <c:set var="Teacher" value="User" />
+        <h2>FIN, <c:out value="${sessionScope[Teacher].last_name} ${sessionScope[Teacher].first_name}"/> POSSEDE ${fn:length(internsList)} ETUDIANTS</h2>
     </table>
     <input type="submit" name="UpdateAll" value="Update interns" />
 </form>
