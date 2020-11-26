@@ -7,7 +7,7 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -147,4 +147,13 @@ public class Intern extends Model {
         }
     }
 
+    public void ShowConsole(){
+        System.out.println("------------------------");
+        System.out.println("Intern id :" + this.getId());
+        System.out.println("Intern firtname :" + this.getFirst_name());
+        System.out.println("Intern lastname :" + this.getLast_name());
+        System.out.println("Intern group :" + this.getGroup());
+        System.out.println("Intern linkedin :" + this.getLinkedin());
+        
+    }
 }
