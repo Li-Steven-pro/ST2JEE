@@ -50,6 +50,10 @@ public class Intern extends Model {
     //mission
     private Mission mission;
 
+    public Intern(){
+        id = -1;
+        mission = new Mission();
+    }
     public static String getTable() {
         return table;
     }

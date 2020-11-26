@@ -55,13 +55,6 @@ public class DataServices {
             // Add driver
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(url, user, pwd);
-
-            //Test Connection
-//            Statement stmt = conn.createStatement();
-//            ResultSet rs = stmt.executeQuery("SELECT * from teacher");
-//            while(rs.next()){
-//                System.out.println(rs.getString("firstname"));
-//            }
             return conn;
         } catch (/*IOException |*/SQLException | ClassNotFoundException ex) {
             Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,7 +66,14 @@ public class DataServices {
     public ResultSet selectQuery(String query) {
         ResultSet rs = null;
         try {
-            Connection conn = this.getConnection();
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            conn = this.getConnection();
             Statement stmt = conn.createStatement();
             rs = stmt.executeQuery(query);
         } catch (SQLException ex) {

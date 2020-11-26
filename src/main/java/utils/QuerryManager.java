@@ -19,29 +19,44 @@ import model.VisitSheet;
  */
 public class QuerryManager {
 
-    public static String insertQuerry(String tableName, ArrayList<String> attributs, ArrayList<String> values) {
-        String querry = "INSERT INTO 'ST2EEDB'.'" + tableName + paranthesesAttr(attributs);
+    public static String insertQuery(String tableName, ArrayList<String> attributs, ArrayList<String> values) {
+        String querry = "INSERT INTO `ST2EEDB`.`" + tableName + "`" + paranthesesAttr(attributs) + "\n";
         querry += " VALUES " + parantheses(values);
-        querry += ";";
+        querry += ";\nSET @" + tableName + "_id = LAST_INSERT_ID();";
         return querry;
     }
 
     public static String sqlAttr(String attr) {
-        return '`' + attr + '`';
+        if (attr.charAt(0) != '@') {
+            return '`' + attr + '`';
+        } else {
+            return attr;
+        }
     }
 
     public static String sqlVar(String var) {
-        String value;
+        String value = var;
+        System.out.println("sqlVar: " + var);
         if (var == null) {
             value = "NULL";
         } else if (var.toUpperCase().equals("TRUE")) {
             value = "'1'";
         } else if (var.toUpperCase().equals("FALSE")) {
             value = "'0'";
-        } else {
+        }else if (var.length()==0){
+            value = "''";
+        } else if (var.charAt(0) != '@'){
             value = "'" + var + "'";
         }
+        System.out.println("sqlVar Result: " + value);
         return value;
+    }
+
+    public static String sqlSetId(String tableName, int id) {
+        if (id < 0) {
+            return "@" + tableName + "_id";
+        }
+        return Integer.toString(id);
     }
 
     public static String update(String tableName, int ID, ArrayList<String> attributs, ArrayList<String> values) {
@@ -55,6 +70,14 @@ public class QuerryManager {
         }
         querry += "WHERE (`" + tableName + "_id` = '" + ID + "');\n";
         return querry;
+    }
+
+    public static String updateInsert(String tableName, int ID, ArrayList<String> attributs, ArrayList<String> values) {
+        if (ID < 0) {
+            return insertQuery(tableName, attributs, values);
+        } else {
+            return update(tableName, ID, attributs, values);
+        }
     }
 
     public static String parantheses(ArrayList<String> elements) {
@@ -123,24 +146,32 @@ public class QuerryManager {
     }
 
     public static String updateIntern(Intern intern) {
+        ArrayList<String> attributs;
+        ArrayList<String> valuesArray;
+        Mission mission = intern.getMission();
+        EvalSheet evalS = mission.getEvalS();
+        VisitSheet visitS = mission.getVisitS();
+        System.out.println("Mission.VisitS.ID:" + mission.getVisitS());
+        // Start Query
         String query = "START TRANSACTION;\n";
-
-        // Update intern
-        ArrayList<String> attributs = new ArrayList(Arrays.asList(Intern.getAttr()));
+        // Update Eval Sheet
+        attributs = new ArrayList(Arrays.asList(EvalSheet.getAttr()));
         attributs.remove(0);
-        String[] values = {intern.getGroup(),
-            intern.getFirst_name(),
-            intern.getLast_name(),
-            intern.getAddress(),
-            intern.getSkills(),
-            intern.getLinkedin(),
-            ((Date) intern.getBirthday()).toString(),
-            Integer.toString(intern.getMission().getId())};
-        ArrayList<String> valuesArray = new ArrayList(Arrays.asList(values));
-        query += update(Intern.getTable(), intern.getId(), attributs, valuesArray);
+        String[] valuesEvalSheet = {evalS.getComment(),
+            Integer.toString(evalS.getGradeTech()),
+            Integer.toString(evalS.getGradeCom())};
+        valuesArray = new ArrayList(Arrays.asList(valuesEvalSheet));
+        query += updateInsert(EvalSheet.getTable(), evalS.getId(), attributs, valuesArray);
+
+        // Update Visit Sheet
+        attributs = new ArrayList(Arrays.asList(VisitSheet.getAttr()));
+        attributs.remove(0);
+        String[] valuesVisitSheet = {Boolean.toString(visitS.isPlanned()),
+            Boolean.toString(visitS.isDone())};
+        valuesArray = new ArrayList(Arrays.asList(valuesVisitSheet));
+        query += updateInsert(VisitSheet.getTable(), visitS.getId(), attributs, valuesArray);
 
         // Update mission
-        Mission mission = intern.getMission();
         attributs = new ArrayList(Arrays.asList(Mission.getAttr()));
         attributs.remove(0);
         String[] valuesMission = {Integer.toString(mission.getYear()),
@@ -151,31 +182,28 @@ public class QuerryManager {
             mission.getMeetingInfo(),
             Boolean.toString(mission.isSoutenance()),
             mission.getKeyWord(),
-            Integer.toString(mission.getEvalS().getId()),
-            Integer.toString(mission.getVisitS().getId())};
+            sqlSetId(EvalSheet.getTable(), mission.getEvalS().getId()),
+            sqlSetId(VisitSheet.getTable(), mission.getVisitS().getId())};
         valuesArray = new ArrayList(Arrays.asList(valuesMission));
-        query += update(Mission.getTable(), mission.getId(), attributs, valuesArray);
+        query += updateInsert(Mission.getTable(), mission.getId(), attributs, valuesArray);
 
-        // Update Eval Sheet
-        EvalSheet evalS = mission.getEvalS();
-        attributs = new ArrayList(Arrays.asList(EvalSheet.getAttr()));
+        // Update intern
+        attributs = new ArrayList(Arrays.asList(Intern.getAttr()));
         attributs.remove(0);
-        String[] valuesEvalSheet = {evalS.getComment(),
-            Integer.toString(evalS.getGradeTech()),
-            Integer.toString(evalS.getGradeCom())};
-        valuesArray = new ArrayList(Arrays.asList(valuesEvalSheet));
-        query += update(EvalSheet.getTable(), evalS.getId(), attributs, valuesArray);
+        String[] values = {intern.getGroup(),
+            intern.getFirst_name(),
+            intern.getLast_name(),
+            intern.getAddress(),
+            intern.getSkills(),
+            intern.getLinkedin(),
+            ((Date) intern.getBirthday()).toString(),
+            sqlSetId(Mission.getTable(), intern.getMission().getId())};
+        valuesArray = new ArrayList(Arrays.asList(values));
+        query += updateInsert(Intern.getTable(), intern.getId(), attributs, valuesArray);
 
-        // Update Visit Sheet
-        VisitSheet visitS = mission.getVisitS();
-        attributs = new ArrayList(Arrays.asList(VisitSheet.getAttr()));
-        attributs.remove(0);
-        String[] valuesVisitSheet = {Boolean.toString(visitS.isPlanned()),
-            Boolean.toString(visitS.isDone())};
-        valuesArray = new ArrayList(Arrays.asList(valuesVisitSheet));
-        query += update(VisitSheet.getTable(), visitS.getId(), attributs, valuesArray);
-
+        // End Query
         query += "COMMIT;\n";
+        System.out.println(query);
         return query;
     }
 }

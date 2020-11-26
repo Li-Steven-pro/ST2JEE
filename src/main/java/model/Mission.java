@@ -58,7 +58,11 @@ public class Mission {
     public static String[] getAttr() {
         return attr;
     }
-
+    public Mission(){
+        id = -1;
+        evalS = new EvalSheet();
+        visitS = new VisitSheet();
+    }
     public void setMissionById(DataServices dbs, int ident) {
         try {
             String query = "SELECT * from " + Mission.getTable() + " WHERE mission_id = '" + Integer.toString(ident) + "';";
@@ -76,13 +80,13 @@ public class Mission {
                     evalS = new EvalSheet();
                     evalS.setEvalSheetById(dbs, missionRS.getInt("eval_sheet_id"));
                 } else {
-                    evalS = null;
+                    evalS = new EvalSheet();
                 }
                 if (missionRS.getObject("visit_sheet_id") != null) {
                     visitS = new VisitSheet();
                     visitS.setVisitSheetById(dbs, missionRS.getInt("visit_sheet_id"));
                 } else {
-                    visitS = null;
+                    visitS = new VisitSheet();
                 }
             }
         } catch (SQLException ex) {
