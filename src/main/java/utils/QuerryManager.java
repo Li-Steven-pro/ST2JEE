@@ -51,7 +51,7 @@ public class QuerryManager {
         }
         if (0 < attributs.size()) {
             querry += sqlAttr(attributs.get(attributs.size() - 1)) + " = ";
-            querry += sqlVar(values.get(values.size() - 1)) + "\n";
+            querry += sqlVar(values.get(attributs.size() - 1)) + "\n";
         }
         querry += "WHERE (`" + tableName + "_id` = '" + ID + "');\n";
         return querry;
@@ -83,7 +83,7 @@ public class QuerryManager {
 
     public static String paranthesesAttrValues(String[] elements) {
         String par = "(";
-        for (int i = 1; i < elements.length - 1; i++) {
+        for (int i = 0; i < elements.length - 1; i++) {
             par += sqlAttr(elements[i]) + ",";
         }
         if (1 < elements.length) {
@@ -134,7 +134,7 @@ public class QuerryManager {
             intern.getAddress(),
             intern.getSkills(),
             intern.getLinkedin(),
-            ((Date)intern.getBirthday()).toString(),
+            ((Date) intern.getBirthday()).toString(),
             Integer.toString(intern.getMission().getId())};
         ArrayList<String> valuesArray = new ArrayList(Arrays.asList(values));
         query += update(Intern.getTable(), intern.getId(), attributs, valuesArray);
@@ -144,8 +144,8 @@ public class QuerryManager {
         attributs = new ArrayList(Arrays.asList(Mission.getAttr()));
         attributs.remove(0);
         String[] valuesMission = {Integer.toString(mission.getYear()),
-            ((Date)mission.getStartDate()).toString(),
-            ((Date)mission.getEndDate()).toString(),
+            ((Date) mission.getStartDate()).toString(),
+            ((Date) mission.getEndDate()).toString(),
             mission.getReport_title(),
             mission.getComment(),
             mission.getMeetingInfo(),
