@@ -43,7 +43,7 @@
 
 
             <tr>
-            <form name="TableFormIndex" method="get" action="ControllerDB">
+            <form name="TableFormIndex" method="post" action="internController">
 
                 <input type="hidden" name="id_student" value="" />
                 <td><input type="text" name="GroupStudent" value=" ${intern.group}" />
@@ -86,12 +86,12 @@
                 <td><input type="text" name="NomEntreprise" value="" /></td><!-- String -->
                 <td><input type="text" name="Mds" value="" /></td><!-- String -->
                 <td><input type="text" name="Adresse" value="${intern.address}" /></td><!-- String -->
-                    <%--<td><input type="text" name="NoteTech" value="${intern.mission.evalS.gradTech}" /></td><!-- String -->
-                    <td><input type="text" name="NoteCom" value="${intern.mission.evalS.gradCom}" /></td><!-- String -->
-                    <td><input type="submit" name="submit" value="Valid Edit"/></td>
-                    --%>
+                <td><input type="text" name="NoteTech" value="${intern.mission.evalS.gradeTech}" /></td><!-- String -->
+                <td><input type="text" name="NoteCom" value="${intern.mission.evalS.gradeCom}" /></td><!-- String -->
+                <td><input type="submit" name="submit" value="Valid Edit"/></td>
+
             </form>
-            <form name="Actual_intern" method="post" action="ControllerDB">
+            <form name="Actual_intern" method="get" action="internController">
                 <input type="hidden" name="Intern" value="i" />
                 <td><input type="submit" name="detail" value="Detail"/></td>
             </form>
