@@ -31,7 +31,7 @@
     </welcome-file-list>
     <servlet-mapping>
         <servlet-name>internController</servlet-name>
-        <url-pattern>/internController</url-pattern>
+        <url-pattern>/intern/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
