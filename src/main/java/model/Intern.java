@@ -7,7 +7,7 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -31,7 +31,7 @@ public class Intern extends Model {
                 "skills",
                 "linkedin",
                 "birthday"};
-    //id
+    //info_intern_
     private int id;
     //intern_group
     private String group;
@@ -50,6 +50,10 @@ public class Intern extends Model {
     //mission
     private Mission mission;
 
+    public static String getTable() {
+        return table;
+    }
+    
     public static String[] getAttr() {
         return attr;
     }

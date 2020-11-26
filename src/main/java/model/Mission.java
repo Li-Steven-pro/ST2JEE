@@ -28,7 +28,7 @@ public class Mission {
                 "comments_of_the_intern",
                 "mid_internship_meeting_info",
                 "soutenance",
-                "keyWord",
+                "key_word",
                 "eval_sheet_id",
                 "visit_sheet_id"};
 
