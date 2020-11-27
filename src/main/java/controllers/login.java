@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controllers;
 
 import java.io.IOException;
@@ -15,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Teacher;
 import static utils.CONSTANT.*;
-
 /**
  *
  * @author steve
@@ -26,31 +20,18 @@ public class login extends HttpServlet {
     private String DeniedMsg = "Access Denied !";
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
      * Handles the HTTP <code>GET</code> method.
-     *
+     * Redirect to the login page
+     * 
      * @param request servlet request
-     * @param response servlet response
+     * @param response servlet
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Redirect to the login page
         request.getRequestDispatcher(LOGIN_VIEW_PATH).forward(request, response);
     }
 
@@ -65,14 +46,21 @@ public class login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Load teacher in User using request scope
         setUserFromRequest(request);
+        // Check if the user has db access 
         if (User.access()) {
             HttpSession session = request.getSession();
+            //Put teacher info in session scope 
             session.setAttribute("User", User);
+            //Put the list of interns in the session scope
             session.setAttribute("internsList", User.getAllInterns());
+            //Put the list of interns in the request scope 
             request.setAttribute("internsList", session.getAttribute("internsList"));
+            //Redirect to "WEB-INF/list.jsp" 
             request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
         } else {
+            // Redirect to "WEB-INF/login.jsp" if he doesn't have access
             request.setAttribute("errMsg", DeniedMsg);
             request.getRequestDispatcher(LOGIN_VIEW_PATH).forward(request, response);
         }
@@ -85,9 +73,14 @@ public class login extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+        return "Servlet for login";
+    }
 
+    /**
+     * Set the request information in the user as teacher object
+     * 
+     * @param request servlet request
+     */
     private void setUserFromRequest(HttpServletRequest request) {
         User = new Teacher();
         User.setUser(request.getParameter("loginForm"));
