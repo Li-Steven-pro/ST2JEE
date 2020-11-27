@@ -24,32 +24,34 @@
         <form style="display: flex;padding:10px;" name="LogOut" method="post" action="logout">
             <input style="padding:-10px;" class="btn-submit_me" id= "button-submit" type="submit" name="detail" value="Log Out"/>
         </form>
-        <h3><c:out value="${sessionScope[User].last_name} ${sessionScope[User].first_name} ETUDIANTS: ${fn:length(internsList)}"></c:out></h3>
-            <br>
-
-        </div>
-        <div class="login-page">
-            <div class="container-students the-containers" style="overflow-y:scroll">
-                <form name="GlobalForm" method="post" action="intern/update">
-                    <div class="yeet"></div>
-                    </br></br></br></br>
-                    <table >
-                        <tr style="background-color:#3978bb;position: -webkit-sticky;
-                            position: sticky; color: whitesmoke;height: 100%;z-index:auto;">
-                            <td style="height:40px;">Groupe</td>
-                            <td>Nom</td>
-                            <td>Fiche visite</td>
-                            <td>Fiche eval</td>
-                            <td>Soutenance</td>
-                            <td>Plannif</td>
-                            <td>Faite</td>
-                            <td>Date debut</td>
-                            <td>Date fin</td>
-                            <td>Adresse</td>
-                            <td>Note tech</td>
-                            <td>Note comm</td>
-                        </tr>
-                        <!-- form for a single intern-->
+        <c:set var="Teacher" value="User" />
+        <h3><c:out value="${sessionScope[Teacher].last_name} ${sessionScope[Teacher].first_name}"/></h3>
+        <br>
+    </div>
+    <div class="login-page">
+        <div class="container-students the-containers" style="overflow-y:scroll">
+            <form name="GlobalForm" method="post" action="intern/update">
+                <div class="yeet">
+                    <h1 class="header_me"><c:out value="${fn:length(internsList)} etudiants"/></h1>
+                </div>
+                </br></br></br></br>
+                <table >
+                    <tr style="background-color:#3978bb;position: -webkit-sticky;
+                        position: sticky; color: whitesmoke;height: 100%;z-index:auto;">
+                        <td style="height:40px;">Groupe</td>
+                        <td>Nom</td>
+                        <td>Fiche visite</td>
+                        <td>Fiche eval</td>
+                        <td>Soutenance</td>
+                        <td>Plannif</td>
+                        <td>Faite</td>
+                        <td>Date debut</td>
+                        <td>Date fin</td>
+                        <td>Adresse</td>
+                        <td>Note tech</td>
+                        <td>Note comm</td>
+                    </tr>
+                    <!-- form for a single intern-->
                     <c:forEach items="${internsList}" var="intern">
                         <tr style="overflow-y:scroll">
                             <td><input type="hidden" name="id_student" value="${intern.id}" />
@@ -75,7 +77,6 @@
                             <td><a href="<%=application.getContextPath()%>/intern/${intern.id}"/> <button style="padding:-10px;" class="btn-submit_me" id= "button-submit" type="button">Details</button></a></td>
                         </tr>
                     </c:forEach>
-                    <c:set var="Teacher" value="User" />
                     <!---->
                 </table>
                 <input style="padding:-10px;" class="btn-submit_me" id= "button-submit" type="submit" name="UpdateAll" value="Update interns" />
