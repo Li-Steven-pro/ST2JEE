@@ -5,12 +5,9 @@
  */
 package model;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -21,7 +18,7 @@ import utils.DataServices;
  * @author NicoSoOl
  */
 @Stateless
-public class Teacher extends Model {
+public class Teacher {
 
     // Attributs
     private int id;
@@ -72,24 +69,26 @@ public class Teacher extends Model {
         this.last_name = last_name;
     }
 
+    /**
+    * check if the user has db access
+    *
+    * @return if the user has the db access
+    **/
     public boolean access() {
-//        try {
         DataServices dbs = new DataServices(user, pwd);
-//            ResultSet rs = dbs.selectQuery("SELECT * from teacher WHERE login = '" + user + "' AND password = '" + pwd + "';");
-//            if (rs.next()) {
-//                have_access = true;
-//            }
         if (dbs.getConnection() != null) {
             have_access = true;
             setTeacherAsUser(dbs);
         }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Teacher.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        System.out.println("Access : " + have_access);
+        //System.out.println("Access : " + have_access);
         return have_access;
     }
 
+    /**
+    * Set the user by getting the missing information from db  
+    * 
+    *@param dbs DB class 
+    **/
     public boolean setTeacherAsUser(DataServices dbs) {
         try {
             ResultSet rs = dbs.selectQuery("SELECT * from teacher WHERE login = '" + dbs.getUser() + "';");
@@ -105,6 +104,11 @@ public class Teacher extends Model {
         return false;
     }
 
+    /**
+    * Get the list of intern store in arraylist 
+    * 
+    * @return list of intern
+    **/
     public ArrayList<Intern> getAllInterns() {
 
         ArrayList<Intern> internsList = new ArrayList();

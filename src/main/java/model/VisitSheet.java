@@ -36,7 +36,14 @@ public class VisitSheet {
     public static String[] getAttr() {
         return attr;
     }
-
+    
+    /**
+    * Set the visit sheet java bean using the id and get param from the db 
+    * 
+    *@param user Personal db user login
+    *@param pwd Personal db user password
+    *@param ident visit sheet id 
+    **/
     public void setVisitSheetById(String user, String pwd, int ident) {
         try {
             DataServices dbs = new DataServices(user, pwd);

@@ -24,6 +24,13 @@ import utils.DataServices;
  */
 public class auth {
     
+    /**
+    * Check if the user is connect 
+    * otherwise having User in session scope
+    * redirect to the login page if not 
+    *@param request servlet request
+    *@param response servlet response
+    **/
     public static void isConnected(HttpServletRequest request,HttpServletResponse response) {
         HttpSession session = request.getSession();
         if (session.getAttribute("User") == null){
@@ -36,6 +43,13 @@ public class auth {
         }
     }
     
+    /**
+    * Check if the user is associated with the user 
+    * redirect to the list of interns page if not 
+    * 
+    *@param request servlet request
+    *@param response servlet response
+    **/
     public static void hasAccessIntern(HttpServletRequest request, HttpServletResponse response,int id){
         HttpSession session = request.getSession();
         Teacher teacher = (Teacher) session.getAttribute("User");

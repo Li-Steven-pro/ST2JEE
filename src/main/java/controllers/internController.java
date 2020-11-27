@@ -6,8 +6,6 @@ package controllers;
  * and open the template in the editor.
  */
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import middleware.auth;
-import middleware.parser;
 import model.EvalSheet;
 import model.Intern;
 import model.Mission;
@@ -36,33 +33,6 @@ import utils.QuerryManager;
  */
 public class internController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet internController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet internController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -110,9 +80,7 @@ public class internController extends HttpServlet {
 
             Teacher User = (Teacher) session.getAttribute("User");
             DataServices ds = new DataServices(User.getUser(), User.getPwd());
-            for (Intern intern : internsList) {
-                ds.modifQuery(QuerryManager.updateIntern(intern));
-            }
+            internsList.forEach(intern -> {ds.modifQuery(QuerryManager.updateIntern(intern));});
             //internsList = User.getAllInterns();
             session.setAttribute("internsList", internsList);
             request.setAttribute("internsList", internsList);
@@ -131,6 +99,7 @@ public class internController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    /* unused
     public Intern loadIntern(HttpServletRequest request, int id) {
 
         Intern in = new Intern();
@@ -168,7 +137,7 @@ public class internController extends HttpServlet {
         mi.setVisitS(vs);
         in.setMission(mi);
         return in;
-    }
+    }*/
 
     public java.sql.Date stringToSqlDate(String date, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
@@ -177,16 +146,26 @@ public class internController extends HttpServlet {
         } catch (ParseException ex) {
             Logger.getLogger(internController.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Unformattable date");
-        };
+        }
         return null;
     }
 
+     /**
+     * Looping the insertion of form data in insterns
+     *
+     * @param internsList list of interns
+     * @param request servlet request
+     */
     private void UpdateInternsList(ArrayList<Intern> internsList, HttpServletRequest request) {
-        for (Intern intern : internsList) {
-            UpdateInternFromRequest(intern, request);
-        }
+        internsList.forEach(intern -> {UpdateInternFromRequest(intern, request);});
     }
-
+    
+    /**
+     * Insert data from form into instern
+     *
+     * @param intern intern to be update
+     * @param request servlet request
+     */
     private void UpdateInternFromRequest(Intern intern, HttpServletRequest request) {
         intern.ShowConsole();
         intern.setGroup(request.getParameter("GroupStudent" + intern.getId()));

@@ -18,7 +18,7 @@ import utils.DataServices;
  * @author NicoSoOl
  */
 @Stateless
-public class Intern extends Model {
+public class Intern {
 
     // Attributs
     private static String table = "info_intern";
@@ -135,7 +135,15 @@ public class Intern extends Model {
     public void setMission(Mission mission) {
         this.mission = mission;
     }
-
+    
+    /**
+    * Set the intern java bean using the id and get param from the db 
+    * 
+    *@param user Personal db user login
+    *@param pwd Personal db user password
+    *@param ident intern id
+    *@param missionID mission id 
+    **/
     public void setInternById(String user, String pwd, int ident, int missionID) {
         try {
             DataServices dbs = new DataServices(user, pwd);
