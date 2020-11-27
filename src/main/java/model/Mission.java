@@ -58,13 +58,16 @@ public class Mission {
     public static String[] getAttr() {
         return attr;
     }
-    public Mission(){
+
+    public Mission() {
         id = -1;
         evalS = new EvalSheet();
         visitS = new VisitSheet();
     }
-    public void setMissionById(DataServices dbs, int ident) {
+
+    public void setMissionById(String user, String pwd, int ident) {
         try {
+            DataServices dbs = new DataServices(user, pwd);
             String query = "SELECT * from " + Mission.getTable() + " WHERE mission_id = '" + Integer.toString(ident) + "';";
             ResultSet missionRS = dbs.selectQuery(query);
             if (missionRS.next() == true) {
@@ -78,13 +81,13 @@ public class Mission {
                 this.setKeyWord(missionRS.getString("key_word"));
                 if (missionRS.getObject("eval_sheet_id") != null) {
                     evalS = new EvalSheet();
-                    evalS.setEvalSheetById(dbs, missionRS.getInt("eval_sheet_id"));
+                    evalS.setEvalSheetById(user, pwd, missionRS.getInt("eval_sheet_id"));
                 } else {
                     evalS = new EvalSheet();
                 }
                 if (missionRS.getObject("visit_sheet_id") != null) {
                     visitS = new VisitSheet();
-                    visitS.setVisitSheetById(dbs, missionRS.getInt("visit_sheet_id"));
+                    visitS.setVisitSheetById(user, pwd, missionRS.getInt("visit_sheet_id"));
                 } else {
                     visitS = new VisitSheet();
                 }

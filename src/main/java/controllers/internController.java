@@ -215,8 +215,8 @@ public class internController extends HttpServlet {
 //        mi.setReport_title(request.getParameter("Report_title"));
 //        mi.setComment(request.getParameter("CommentMission"));
 //        mi.setMeetingInfo(request.getParameter("MettingInfo"));
-        mi.setSoutenance(Boolean.parseBoolean(request.getParameter("soutenance" + intern.getId())));
-
+        mi.setSoutenance(null!=request.getParameter("soutenance" + intern.getId()));
+        System.out.println("mi soutenance:" + mi.isSoutenance() + "request " + request.getParameter("soutenance" + intern.getId()));
         EvalSheet es = mi.getEvalS();
         System.out.println("es :" + es);
 //        es.setId(Integer.parseInt(request.getParameter("id_evalS")));
@@ -227,8 +227,10 @@ public class internController extends HttpServlet {
         VisitSheet vs = mi.getVisitS();
         System.out.println("vs :" + vs);
 //        vs.setId(Integer.parseInt(request.getParameter("id_visitS")));
-        vs.setPlanned(Boolean.parseBoolean(request.getParameter("plannif" + intern.getId())));
-        vs.setDone(Boolean.parseBoolean(request.getParameter("faite" + intern.getId())));
+        vs.setPlanned(null!=request.getParameter("plannif" + intern.getId()));
+        vs.setDone(null!=request.getParameter("faite" + intern.getId()));
         //intern.ShowConsole();
+        System.out.println("vs planned :" + vs.isPlanned());
+        System.out.println("vs done:" + vs.isDone());
     }
 }

@@ -16,28 +16,32 @@ import utils.DataServices;
  * @author steve
  */
 public class VisitSheet {
+
     static private String table = "visit_sheet";
-    private static String[] attr = 
-        {"visit_sheet_id",
-        "visit_planned",
-        "visit_done"};
+    private static String[] attr
+            = {"visit_sheet_id",
+                "visit_planned",
+                "visit_done"};
     // visit_sheet_id
     private int id;
     // visit_planned
     private boolean planned;
     // visit_done
-    private boolean done; 
-    
-    public VisitSheet(){
+    private boolean done;
+
+    public VisitSheet() {
         id = -1;
     }
+
     public static String[] getAttr() {
         return attr;
     }
-    public void setVisitSheetById(DataServices dbs,int ident){
+
+    public void setVisitSheetById(String user, String pwd, int ident) {
         try {
-            ResultSet visitsheetRS = dbs.selectQuery("SELECT * from " + VisitSheet.getTable() +" WHERE visit_sheet_id = '" + Integer.toString(ident)+"';");
-            if(visitsheetRS.next() == true ){
+            DataServices dbs = new DataServices(user, pwd);
+            ResultSet visitsheetRS = dbs.selectQuery("SELECT * from " + VisitSheet.getTable() + " WHERE visit_sheet_id = '" + Integer.toString(ident) + "';");
+            if (visitsheetRS.next() == true) {
                 this.setId(visitsheetRS.getInt("visit_sheet_id"));
                 this.setPlanned(visitsheetRS.getBoolean("visit_planned"));
                 this.setDone(visitsheetRS.getBoolean("visit_done"));
@@ -74,5 +78,5 @@ public class VisitSheet {
     public static String getTable() {
         return table;
     }
-    
+
 }

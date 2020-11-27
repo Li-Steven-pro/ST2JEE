@@ -117,7 +117,7 @@ public class Teacher extends Model {
                 System.out.println();
                 // Create intern
                 intern = new Intern();
-                intern.setInternById(dbs, rs.getInt("id"), rs.getInt("mission_id"));
+                intern.setInternById(user, pwd, rs.getInt("id"), rs.getInt("mission_id"));
                 // Add it to the list
                 internsList.add(intern);
             }

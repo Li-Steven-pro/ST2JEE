@@ -50,14 +50,15 @@ public class Intern extends Model {
     //mission
     private Mission mission;
 
-    public Intern(){
+    public Intern() {
         id = -1;
         mission = new Mission();
     }
+
     public static String getTable() {
         return table;
     }
-    
+
     public static String[] getAttr() {
         return attr;
     }
@@ -135,8 +136,9 @@ public class Intern extends Model {
         this.mission = mission;
     }
 
-    public void setInternById(DataServices dbs, int ident, int missionID) {
+    public void setInternById(String user, String pwd, int ident, int missionID) {
         try {
+            DataServices dbs = new DataServices(user, pwd);
             ResultSet internRS = dbs.selectQuery("SELECT * from info_intern WHERE info_intern_id = '" + Integer.toString(ident) + "';");
             if (internRS.next() == true) {
                 this.setId(internRS.getInt("info_intern_id"));
@@ -148,20 +150,20 @@ public class Intern extends Model {
                 this.setLinkedin(internRS.getString("linkedin"));
                 this.setBirthday(internRS.getDate("birthday"));
                 mission = new Mission();
-                mission.setMissionById(dbs, missionID);
+                mission.setMissionById(user, pwd, missionID);
             }
         } catch (SQLException ex) {
             Logger.getLogger(Intern.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void ShowConsole(){
+    public void ShowConsole() {
         System.out.println("------------------------");
         System.out.println("Intern id :" + this.getId());
         System.out.println("Intern firtname :" + this.getFirst_name());
         System.out.println("Intern lastname :" + this.getLast_name());
         System.out.println("Intern group :" + this.getGroup());
         System.out.println("Intern linkedin :" + this.getLinkedin());
-        
+
     }
 }
