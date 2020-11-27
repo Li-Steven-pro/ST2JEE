@@ -22,32 +22,32 @@
         <td><input type="submit" name="detail" value="Log Out"/></td>
     </form>
     <form name="GlobalForm" method="post" action="intern/update">
-    <table>
-        <tr>
-            <td>Group</td>
-            <td>Last Name</td>
-            <td>Fiche visite</td>
-            <td>Fiche eval</td>
-            <td>Rapport</td>
-            <td>Soutenance</td>
-            <td>Plannif</td>
-            <td>Faite</td>
-            <td>Stage Date debut</td>
-            <td>Stage Date fin</td>
-            <td>Entreprise nom</td>
-            <td>Maitre de stage</td>
-            <td>Adresse</td>
-            <td>Note technique</td>
-            <td>Notet com</td>
-        </tr>
-        <!-- form for a single intern-->
-        <c:forEach items="${internsList}" var="intern">
+        <table>
             <tr>
+                <td>Group</td>
+                <td>Last Name</td>
+                <td>Fiche visite</td>
+                <td>Fiche eval</td>
+                <td>Rapport</td>
+                <td>Soutenance</td>
+                <td>Plannif</td>
+                <td>Faite</td>
+                <td>Stage Date debut</td>
+                <td>Stage Date fin</td>
+                <td>Entreprise nom</td>
+                <td>Maitre de stage</td>
+                <td>Adresse</td>
+                <td>Note technique</td>
+                <td>Notet com</td>
+            </tr>
+            <!-- form for a single intern-->
+            <c:forEach items="${internsList}" var="intern">
+                <tr>
                 <input type="hidden" name="id_student" value="${intern.id}" />
-                <td><input type="text" name="GroupStudent${intern.id}" value=" ${intern.group}" />
+                <td><input type="text" name="GroupStudent${intern.id}" value="${intern.group}" />
 
                 </td><!-- String -->
-                <td><input type="text" name="LastNameStudent${intern.id}" value=" ${intern.last_name}"   />
+                <td><input type="text" name="LastNameStudent${intern.id}" value="${intern.last_name}"   />
 
                 </td><!-- String -->
                 <td>
@@ -85,12 +85,12 @@
                 <td><input type="text" name="NoteTech${intern.id}" value="${intern.mission.evalS.gradeTech}" /></td><!-- String -->
                 <td><input type="text" name="NoteCom${intern.id}" value="${intern.mission.evalS.gradeCom}" /></td><!-- String -->
                 <td><a href="<%=application.getContextPath()%>/intern/${intern.id}"/> <button type="button">Details</button></a></td>
-            </tr>
-            </br>
-        </c:forEach>
-        <c:set var="Teacher" value="User" />
-        <h2>FIN, <c:out value="${sessionScope[Teacher].last_name} ${sessionScope[Teacher].first_name}"/> POSSEDE ${fn:length(internsList)} ETUDIANTS</h2>
-    </table>
-    <input type="submit" name="UpdateAll" value="Update interns" />
-</form>
+                </tr>
+                </br>
+            </c:forEach>
+            <c:set var="Teacher" value="User" />
+            <h2>FIN, <c:out value="${sessionScope[Teacher].last_name} ${sessionScope[Teacher].first_name}"/> POSSEDE ${fn:length(internsList)} ETUDIANTS</h2>
+        </table>
+        <input type="submit" name="UpdateAll" value="Update interns" />
+    </form>
 </body>
