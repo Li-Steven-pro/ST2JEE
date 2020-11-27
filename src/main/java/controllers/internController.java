@@ -73,16 +73,16 @@ public class internController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
-        auth.isConnected(request,response);
+            throws ServletException, IOException {
+        auth.isConnected(request, response);
         HttpSession session = request.getSession();
-        List<Intern> internList =  (ArrayList<Intern>) session.getAttribute("internsList");
-        if (internList == null){
+        List<Intern> internList = (ArrayList<Intern>) session.getAttribute("internsList");
+        if (internList == null) {
             Teacher teacher = (Teacher) session.getAttribute("User");
             internList = teacher.getAllInterns();
             session.setAttribute("internsList", internList);
         }
-        request.setAttribute("internsList",internList);
+        request.setAttribute("internsList", internList);
         request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
     }
 
@@ -107,11 +107,11 @@ public class internController extends HttpServlet {
             HttpSession session = request.getSession();
             ArrayList<Intern> internsList = (ArrayList<Intern>) session.getAttribute("internsList");
             UpdateInternsList(internsList, request);
-            
+
             Teacher User = (Teacher) session.getAttribute("User");
             DataServices ds = new DataServices(User.getUser(), User.getPwd());
             for (Intern intern : internsList) {
-                ds.selectQuery(QuerryManager.updateIntern(intern));
+                ds.modifQuery(QuerryManager.updateIntern(intern));
             }
             //internsList = User.getAllInterns();
             session.setAttribute("internsList", internsList);
@@ -204,7 +204,7 @@ public class internController extends HttpServlet {
 //        mi.setReport_title(request.getParameter("Report_title"));
 //        mi.setComment(request.getParameter("CommentMission"));
 //        mi.setMeetingInfo(request.getParameter("MettingInfo"));
-        mi.setSoutenance(null!=request.getParameter("soutenance" + intern.getId()));
+        mi.setSoutenance(null != request.getParameter("soutenance" + intern.getId()));
         System.out.println("mi soutenance:" + mi.isSoutenance() + "request " + request.getParameter("soutenance" + intern.getId()));
         EvalSheet es = mi.getEvalS();
         System.out.println("es :" + es);
@@ -216,8 +216,8 @@ public class internController extends HttpServlet {
         VisitSheet vs = mi.getVisitS();
         System.out.println("vs :" + vs);
 //        vs.setId(Integer.parseInt(request.getParameter("id_visitS")));
-        vs.setPlanned(null!=request.getParameter("plannif" + intern.getId()));
-        vs.setDone(null!=request.getParameter("faite" + intern.getId()));
+        vs.setPlanned(null != request.getParameter("plannif" + intern.getId()));
+        vs.setDone(null != request.getParameter("faite" + intern.getId()));
         //intern.ShowConsole();
         System.out.println("vs planned :" + vs.isPlanned());
         System.out.println("vs done:" + vs.isDone());

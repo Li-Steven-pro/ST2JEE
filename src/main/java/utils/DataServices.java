@@ -81,4 +81,23 @@ public class DataServices {
         }
         return rs;
     }
+
+    public int modifQuery(String query) {
+        int rs = 0;
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            conn = this.getConnection();
+            Statement stmt = conn.createStatement();
+            rs = stmt.executeUpdate(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
+    }
 }
