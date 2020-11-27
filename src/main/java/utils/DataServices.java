@@ -23,14 +23,15 @@ import java.util.logging.Logger;
 public class DataServices {
 
     private Properties prop;
-    private InputStream is = null;
+    private InputStream inputStream = null;
 
     private Connection conn;
+    private Statement stmt;
 
     private String url;
     private String user;
     private String pwd;
-
+    
     public String getUser() {
         return user;
     }
@@ -38,7 +39,7 @@ public class DataServices {
     public DataServices(String user, String pwd) {
         try {
             prop = new Properties();
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("/db.properties");
+            inputStream = this.getClass().getClassLoader().getResourceAsStream("/db.properties");
             prop.load(inputStream);
 
             url = prop.getProperty("db_url");
@@ -73,7 +74,7 @@ public class DataServices {
         }
         try {
             conn = this.getConnection();
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             rs = stmt.executeQuery(query);
         } catch (SQLException ex) {
             Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,7 +93,7 @@ public class DataServices {
         }
         try {
             conn = this.getConnection();
-            Statement stmt = conn.createStatement();
+            stmt = conn.createStatement();
             rs = stmt.executeUpdate(query);
         } catch (SQLException ex) {
             Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);

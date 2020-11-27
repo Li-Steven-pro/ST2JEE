@@ -33,6 +33,9 @@ import utils.QuerryManager;
  */
 public class internController extends HttpServlet {
 
+    HttpSession session;
+    ArrayList<Intern> internsList;
+    Teacher teacher;
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -45,14 +48,14 @@ public class internController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         auth.isConnected(request, response);
-        HttpSession session = request.getSession();
-        List<Intern> internList = (ArrayList<Intern>) session.getAttribute("internsList");
-        if (internList == null) {
-            Teacher teacher = (Teacher) session.getAttribute("User");
-            internList = teacher.getAllInterns();
-            session.setAttribute("internsList", internList);
+        session = request.getSession();
+        internsList = (ArrayList<Intern>) session.getAttribute("internsList");
+        if (internsList == null) {
+            teacher = (Teacher) session.getAttribute("User");
+            internsList = teacher.getAllInterns();
+            session.setAttribute("internsList", internsList);
         }
-        request.setAttribute("internsList", internList);
+        request.setAttribute("internsList", internsList);
         request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
     }
 
@@ -75,13 +78,13 @@ public class internController extends HttpServlet {
                 System.out.println("Controller Update all interns");
                 System.out.println(request.getParameter("id_student"));
                 System.out.println(request.getPathInfo());
-                HttpSession session = null;
+                session = null;
                 try {
                     session = request.getSession();
                 }catch(java.lang.IllegalStateException ex){
                     response.sendRedirect("login");
                 }
-                ArrayList<Intern> internsList = (ArrayList<Intern>) session.getAttribute("internsList");
+                internsList = (ArrayList<Intern>) session.getAttribute("internsList");
                 UpdateInternsList(internsList, request);
 
                 Teacher User = (Teacher) session.getAttribute("User");
@@ -93,9 +96,7 @@ public class internController extends HttpServlet {
             }
             //response.sendRedirect(request.getContextPath()+ "/intern");
             request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
-        } catch (ServletException ex) {
-            Logger.getLogger(internController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (ServletException | IOException ex) {
             Logger.getLogger(internController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -33,6 +33,10 @@ import utils.QuerryManager;
  */
 public class myInterns extends HttpServlet {
 
+    private Intern intern;
+    private int id;
+    private HttpSession session;
+    private Teacher User;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -72,8 +76,8 @@ public class myInterns extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         auth.isConnected(request,response);
-        int id = parser.getIdFromUrl(request, response);
-        Intern intern = getInternFromId(request, id);
+        id = parser.getIdFromUrl(request, response);
+        intern = getInternFromId(request, id);
         // Prevent error
         if (intern == null){
             request.getRequestDispatcher(ERROR_PATH).forward(request, response);
@@ -95,14 +99,14 @@ public class myInterns extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         auth.isConnected(request,response);
-        int id = Integer.parseInt(request.getParameter("id_student"));
-        Intern intern = getInternFromId(request, id);
+        id = Integer.parseInt(request.getParameter("id_student"));
+        intern = getInternFromId(request, id);
         if (intern == null){
             request.getRequestDispatcher(ERROR_PATH).forward(request, response);
         }
         UpdateInternFromRequest(intern,request);
-        HttpSession session = request.getSession();
-        Teacher User = (Teacher) session.getAttribute("User");
+        session = request.getSession();
+        User = (Teacher) session.getAttribute("User");
         DataServices ds = new DataServices(User.getUser(), User.getPwd());
         ds.selectQuery(QuerryManager.updateIntern(intern));
         request.setAttribute("intern",intern);
@@ -126,11 +130,11 @@ public class myInterns extends HttpServlet {
     * @return the intern associated with the id
     **/
     private Intern getInternFromId(HttpServletRequest request, int id){
-        HttpSession session = request.getSession();
+        session = request.getSession();
         ArrayList<Intern> internList = (ArrayList<Intern>) session.getAttribute("internsList");
-        for(Intern intern : internList){
-            if (intern.getId() == id){
-                return intern;
+        for(Intern internI : internList){
+            if (internI.getId() == id){
+                return internI;
             }
         }
         return null;

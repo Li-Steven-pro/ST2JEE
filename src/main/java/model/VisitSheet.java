@@ -28,7 +28,8 @@ public class VisitSheet {
     private boolean planned;
     // visit_done
     private boolean done;
-
+    private DataServices dbs;
+    private ResultSet visitsheetRS;
     public VisitSheet() {
         id = -1;
     }
@@ -46,8 +47,8 @@ public class VisitSheet {
     **/
     public void setVisitSheetById(String user, String pwd, int ident) {
         try {
-            DataServices dbs = new DataServices(user, pwd);
-            ResultSet visitsheetRS = dbs.selectQuery("SELECT * from " + VisitSheet.getTable() + " WHERE visit_sheet_id = '" + Integer.toString(ident) + "';");
+            dbs = new DataServices(user, pwd);
+            visitsheetRS = dbs.selectQuery("SELECT * from " + VisitSheet.getTable() + " WHERE visit_sheet_id = '" + Integer.toString(ident) + "';");
             if (visitsheetRS.next() == true) {
                 this.setId(visitsheetRS.getInt("visit_sheet_id"));
                 this.setPlanned(visitsheetRS.getBoolean("visit_planned"));

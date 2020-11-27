@@ -55,6 +55,12 @@ public class Mission {
     // visit_sheet_id
     private VisitSheet visitS;
 
+    private DataServices dbs ;
+    
+    private String query;
+    
+    private ResultSet missionRS;
+    
     public static String[] getAttr() {
         return attr;
     }
@@ -74,9 +80,9 @@ public class Mission {
     **/
     public void setMissionById(String user, String pwd, int ident) {
         try {
-            DataServices dbs = new DataServices(user, pwd);
-            String query = "SELECT * from " + Mission.getTable() + " WHERE mission_id = '" + Integer.toString(ident) + "';";
-            ResultSet missionRS = dbs.selectQuery(query);
+            dbs = new DataServices(user, pwd);
+            query = "SELECT * from " + Mission.getTable() + " WHERE mission_id = '" + Integer.toString(ident) + "';";
+            missionRS = dbs.selectQuery(query);
             if (missionRS.next() == true) {
                 this.setId(missionRS.getInt("mission_id"));
                 this.setYear(missionRS.getInt("year"));

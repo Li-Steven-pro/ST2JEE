@@ -1,9 +1,7 @@
 package controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +17,7 @@ public class login extends HttpServlet {
 
     private Teacher User;
     private String DeniedMsg = "Access Denied !";
-
+    private HttpSession session;
     /**
      * Handles the HTTP <code>GET</code> method. Redirect to the login page
      *
@@ -54,7 +52,7 @@ public class login extends HttpServlet {
         setUserFromRequest(request);
         // Check if the user has db access 
         if (User.access()) {
-            HttpSession session = request.getSession();
+            session = request.getSession();
             //Put teacher info in session scope 
             session.setAttribute("User", User);
             //Put the list of interns in the session scope
@@ -97,7 +95,7 @@ public class login extends HttpServlet {
      * @param request servlet request
      */
     private void clearSession(HttpServletRequest request) {
-        HttpSession session = request.getSession();
+        session = request.getSession();
         session.removeAttribute("internsList");
         session.removeAttribute("User");
     }

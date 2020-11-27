@@ -23,6 +23,10 @@ import utils.DataServices;
  */
 public class internAddController extends HttpServlet {
 
+    private HttpSession session;
+    private Teacher User;
+    private ArrayList<Intern> internsList;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,8 +40,8 @@ public class internAddController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         if (request.getParameter("Nouveau") != null) {
-            HttpSession session = request.getSession();
-            Teacher User = (Teacher) session.getAttribute("User");
+            session = request.getSession();
+            User = (Teacher) session.getAttribute("User");
 
             new DataServices(User.getUser(), User.getPwd()).modifQuery(
                     "START TRANSACTION;"
@@ -47,7 +51,7 @@ public class internAddController extends HttpServlet {
                     + "     SET @mission_id = LAST_INSERT_ID();"
                     + "INSERT INTO `ST2EEDB`.`intern` (`teacher_id`, `info_intern_id`, `mission_id`) VALUES('" + User.getId() + "', @info_intern_id, @mission_id);"
                     + "COMMIT;");
-            ArrayList<Intern> internsList = User.getAllInterns();
+            internsList = User.getAllInterns();
             session.setAttribute("internsList", internsList);
             request.setAttribute("internsList", internsList);
         }

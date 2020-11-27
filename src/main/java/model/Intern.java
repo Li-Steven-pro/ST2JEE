@@ -50,6 +50,10 @@ public class Intern {
     //mission
     private Mission mission;
 
+    private DataServices dbs;
+    
+    private ResultSet internRS;
+    
     public Intern() {
         id = -1;
         mission = new Mission();
@@ -146,8 +150,8 @@ public class Intern {
     **/
     public void setInternById(String user, String pwd, int ident, int missionID) {
         try {
-            DataServices dbs = new DataServices(user, pwd);
-            ResultSet internRS = dbs.selectQuery("SELECT * from info_intern WHERE info_intern_id = '" + Integer.toString(ident) + "';");
+            dbs = new DataServices(user, pwd);
+            internRS = dbs.selectQuery("SELECT * from info_intern WHERE info_intern_id = '" + Integer.toString(ident) + "';");
             if (internRS.next() == true) {
                 this.setId(internRS.getInt("info_intern_id"));
                 this.setGroup(internRS.getString("intern_group"));

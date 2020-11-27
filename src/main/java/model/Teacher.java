@@ -26,8 +26,11 @@ public class Teacher {
     private String pwd;
     private String first_name;
     private String last_name;
-    boolean have_access = false;
-
+    private boolean have_access = false;
+    private DataServices dbs;
+    private ResultSet rs;
+    private ArrayList<Intern> internsList;
+    private Intern intern;
     public int getId() {
         return id;
     }
@@ -75,7 +78,7 @@ public class Teacher {
     * @return if the user has the db access
     **/
     public boolean access() {
-        DataServices dbs = new DataServices(user, pwd);
+        dbs = new DataServices(user, pwd);
         if (dbs.getConnection() != null) {
             have_access = true;
             setTeacherAsUser(dbs);
@@ -88,10 +91,11 @@ public class Teacher {
     * Set the user by getting the missing information from db  
     * 
     *@param dbs DB class 
+     * @return  if the instruction success
     **/
     public boolean setTeacherAsUser(DataServices dbs) {
         try {
-            ResultSet rs = dbs.selectQuery("SELECT * from teacher WHERE login = '" + dbs.getUser() + "';");
+            rs = dbs.selectQuery("SELECT * from teacher WHERE login = '" + dbs.getUser() + "';");
             if (rs.next() == true) {
                 this.setFirst_name(rs.getString("firstname"));
                 this.setLast_name(rs.getString("lastname"));
@@ -111,11 +115,10 @@ public class Teacher {
     **/
     public ArrayList<Intern> getAllInterns() {
 
-        ArrayList<Intern> internsList = new ArrayList();
-        Intern intern;
-
-        DataServices dbs = new DataServices(user, pwd);
-        ResultSet rs = dbs.selectQuery("SELECT info_intern.info_intern_id as id, intern.mission_id as mission_id from intern INNER JOIN info_intern ON info_intern.info_intern_id = intern.info_intern_id WHERE teacher_id = '" + this.getId() + "';");
+        internsList = new ArrayList();
+        
+        dbs = new DataServices(user, pwd);
+        rs = dbs.selectQuery("SELECT info_intern.info_intern_id as id, intern.mission_id as mission_id from intern INNER JOIN info_intern ON info_intern.info_intern_id = intern.info_intern_id WHERE teacher_id = '" + this.getId() + "';");
         try {
             while (rs.next()) {
                 System.out.println();

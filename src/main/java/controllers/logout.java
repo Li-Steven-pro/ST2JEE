@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
  * @author steve
  */
 public class logout extends HttpServlet {
-
+    private HttpSession session;
     /**
      * HTTP <code>GET</code> and <code>POST</code> methods close the session and redirect to the login page 
      *
@@ -22,7 +22,7 @@ public class logout extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        session = request.getSession();
         // Reset the session
         session.invalidate();
         response.sendRedirect("login");

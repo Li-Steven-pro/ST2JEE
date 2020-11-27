@@ -36,6 +36,8 @@ public class EvalSheet {
     private boolean done;
     // eval_sheet_done
 
+    private DataServices dbs;
+    private ResultSet evalsheetRS;
     public EvalSheet() {
         id = -1;
     }
@@ -49,8 +51,8 @@ public class EvalSheet {
     **/
     public void setEvalSheetById(String user, String pwd, int ident) {
         try {
-            DataServices dbs = new DataServices(user, pwd);
-            ResultSet evalsheetRS = dbs.selectQuery("SELECT * from " + EvalSheet.getTable() + " WHERE eval_sheet_id = '" + Integer.toString(ident) + "';");
+            dbs = new DataServices(user, pwd);
+            evalsheetRS = dbs.selectQuery("SELECT * from " + EvalSheet.getTable() + " WHERE eval_sheet_id = '" + Integer.toString(ident) + "';");
             if (evalsheetRS.next() == true) {
                 this.setId(evalsheetRS.getInt("eval_sheet_id"));
                 this.setComment(evalsheetRS.getString("comments_of_supervisor"));

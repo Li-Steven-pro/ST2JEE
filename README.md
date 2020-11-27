@@ -1,4 +1,4 @@
-# ST2JEE
+# M1 - JEE Project : InternsSuper visi onSolution
 -DL wamp depuis https://www.wampserver.com/
 -Installation wamp
 
