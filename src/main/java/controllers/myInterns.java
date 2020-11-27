@@ -61,7 +61,7 @@ public class myInterns extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Load the intern page
      *
      * @param request servlet request
      * @param response servlet response
@@ -74,6 +74,7 @@ public class myInterns extends HttpServlet {
         auth.isConnected(request,response);
         int id = parser.getIdFromUrl(request, response);
         Intern intern = getInternFromId(request, id);
+        // Prevent error
         if (intern == null){
             request.getRequestDispatcher(ERROR_PATH).forward(request, response);
         }
@@ -82,7 +83,8 @@ public class myInterns extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     *  Put the updated information from the form in the intern object 
+     * and update in the db
      *
      * @param request servlet request
      * @param response servlet response
@@ -114,9 +116,15 @@ public class myInterns extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+        return "myInterns Controller";
+    }
 
+    /**
+    * Get the intern by using the id from the session scope
+    *@param request servlet request
+    *@param id intern id
+    * @return the intern associated with the id
+    **/
     private Intern getInternFromId(HttpServletRequest request, int id){
         HttpSession session = request.getSession();
         ArrayList<Intern> internList = (ArrayList<Intern>) session.getAttribute("internsList");
@@ -127,7 +135,13 @@ public class myInterns extends HttpServlet {
         }
         return null;
     }
-
+    
+    /**
+    * Put all request information in corresponding params
+    * 
+    * @param intern intern to be update
+    *@param request servlet request
+    **/
     private void UpdateInternFromRequest(Intern intern, HttpServletRequest request) {
         // Update Intern 
         intern.setGroup(request.getParameter("GroupStudent"));
@@ -147,6 +161,7 @@ public class myInterns extends HttpServlet {
         mi.setComment(request.getParameter("CommentMission"));
         mi.setMeetingInfo(request.getParameter("MeetingInfoMission"));
         mi.setSoutenance(null!=request.getParameter("soutenanceMission"));
+        mi.setKeyWord(request.getParameter("keyWordMission"));
         //System.out.println("mi soutenance:" + mi.isSoutenance() + "request " + request.getParameter("soutenance"));
         
         // Update Eval Sheet
@@ -166,6 +181,14 @@ public class myInterns extends HttpServlet {
         //System.out.println("vs planned :" + vs.isPlanned());
         //System.out.println("vs done:" + vs.isDone());
     }
+    
+    /**
+    * Put all request information in corresponding params
+    * 
+    * @param date String date from form
+    * @param  format Format of the date, generaly YYYY-MM-DD
+    *@return the sql date object representing the date
+    **/
     public java.sql.Date stringToSqlDate(String date, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
         try {

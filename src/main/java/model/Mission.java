@@ -65,6 +65,13 @@ public class Mission {
         visitS = new VisitSheet();
     }
 
+    /**
+    * Set the mission java bean using the id and get param from the db 
+    * 
+    *@param user Personal db user login
+    *@param pwd Personal db user password
+    *@param ident mission id 
+    **/
     public void setMissionById(String user, String pwd, int ident) {
         try {
             DataServices dbs = new DataServices(user, pwd);

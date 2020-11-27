@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Teacher;
 import static utils.CONSTANT.*;
+
 /**
  *
  * @author steve
@@ -20,9 +21,8 @@ public class login extends HttpServlet {
     private String DeniedMsg = "Access Denied !";
 
     /**
-     * Handles the HTTP <code>GET</code> method.
-     * Redirect to the login page
-     * 
+     * Handles the HTTP <code>GET</code> method. Redirect to the login page
+     *
      * @param request servlet request
      * @param response servlet
      * @throws ServletException if a servlet-specific error occurs
@@ -31,7 +31,9 @@ public class login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //Redirect to the login page
+        // Clear session
+        clearSession(request);
+        // Redirect to the login page
         request.getRequestDispatcher(LOGIN_VIEW_PATH).forward(request, response);
     }
 
@@ -46,6 +48,8 @@ public class login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Clear session
+        clearSession(request);
         // Load teacher in User using request scope
         setUserFromRequest(request);
         // Check if the user has db access 
@@ -78,12 +82,23 @@ public class login extends HttpServlet {
 
     /**
      * Set the request information in the user as teacher object
-     * 
+     *
      * @param request servlet request
      */
     private void setUserFromRequest(HttpServletRequest request) {
         User = new Teacher();
         User.setUser(request.getParameter("loginForm"));
         User.setPwd(request.getParameter("pwdForm"));
+    }
+
+    /**
+     * Clear session attributs for a clean deconnexion
+     *
+     * @param request servlet request
+     */
+    private void clearSession(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("internsList");
+        session.removeAttribute("User");
     }
 }

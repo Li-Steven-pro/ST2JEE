@@ -41,7 +41,7 @@ public class EvalSheet {
     }
 
     /**
-    * Set the eval sheet java bean using the id from the db 
+    * Set the eval sheet java bean using the id and get param from the db 
     * 
     *@param user Personal db user login
     *@param pwd Personal db user password
