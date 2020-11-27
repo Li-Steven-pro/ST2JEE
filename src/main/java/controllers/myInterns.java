@@ -129,40 +129,43 @@ public class myInterns extends HttpServlet {
     }
 
     private void UpdateInternFromRequest(Intern intern, HttpServletRequest request) {
+        // Update Intern 
         intern.setGroup(request.getParameter("GroupStudent"));
         intern.setLast_name(request.getParameter("LastNameStudent"));
-//      in.setFirst_name(request.getParameter("FirstNameStudent
-        intern.setAddress(request.getParameter("Adresse"));
-//        in.setSkills(request.getParameter("Skills"));
-//        in.setLinkedin(request.getParameter("Linkedin"));
-//        in.setBirthday(stringToSqlDate(request.getParameter("Birthday"),"yyyy-mm-dd"));
+        intern.setFirst_name(request.getParameter("FirstNameStudent"));
+        intern.setAddress(request.getParameter("AddressStudent"));
+        intern.setSkills(request.getParameter("SkillsStudent"));
+        intern.setLinkedin(request.getParameter("LinkedinStudent"));
+        intern.setBirthday(stringToSqlDate(request.getParameter("BirthdayStudent"),"yyyy-mm-dd"));
+        
+        // Update Mission
         Mission mi = intern.getMission();
-//        mi.setId(Integer.parseInt(request.getParameter("id_mission")));
-//        mi.setYear(Integer.parseInt(request.getParameter("Year")));
-        mi.setStartDate(stringToSqlDate(request.getParameter("Debut"), "yyyy-mm-dd"));
-        mi.setEndDate(stringToSqlDate(request.getParameter("Fin"), "yyyy-mm-dd"));
-//        mi.setReport_title(request.getParameter("Report_title"));
-//        mi.setComment(request.getParameter("CommentMission"));
-//        mi.setMeetingInfo(request.getParameter("MettingInfo"));
-        mi.setSoutenance(null!=request.getParameter("soutenance" + intern.getId()));
-        System.out.println("mi soutenance:" + mi.isSoutenance() + "request " + request.getParameter("soutenance"));
+        mi.setYear(Integer.parseInt(request.getParameter("YearMission")));
+        mi.setStartDate(stringToSqlDate(request.getParameter("StartMission"), "yyyy-mm-dd"));
+        mi.setEndDate(stringToSqlDate(request.getParameter("EndMission"), "yyyy-mm-dd"));
+        mi.setReport_title(request.getParameter("Report_titleMission"));
+        mi.setComment(request.getParameter("CommentMission"));
+        mi.setMeetingInfo(request.getParameter("MeetingInfoMission"));
+        mi.setSoutenance(null!=request.getParameter("soutenanceMission"));
+        //System.out.println("mi soutenance:" + mi.isSoutenance() + "request " + request.getParameter("soutenance"));
+        
+        // Update Eval Sheet
         EvalSheet es = mi.getEvalS();
-        System.out.println("es :" + es);
-//        es.setId(Integer.parseInt(request.getParameter("id_evalS")));
-//        es.setComment(request.getParameter("CommentEvalSheet"));
+        //System.out.println("es :" + es);
+        es.setComment(request.getParameter("CommentEvalS"));
         es.setGradeTech(Integer.parseInt(request.getParameter("NoteTech")));
         es.setGradeCom(Integer.parseInt(request.getParameter("NoteCom")));
-//        es.setDone(Boolean.parseBoolean(request.getParameter("DoneEval")));
+        es.setDone(null!=request.getParameter("DoneEvalS"));
+        
+        // Update Visit Sheet
         VisitSheet vs = mi.getVisitS();
-        System.out.println("vs :" + vs);
-//        vs.setId(Integer.parseInt(request.getParameter("id_visitS")));
+        //System.out.println("vs :" + vs);
+        //vs.setId(Integer.parseInt(request.getParameter("id_visitS")));
         vs.setPlanned(null!=request.getParameter("plannif"));
         vs.setDone(null!=request.getParameter("faite"));
-        //intern.ShowConsole();
-        System.out.println("vs planned :" + vs.isPlanned());
-        System.out.println("vs done:" + vs.isDone());
+        //System.out.println("vs planned :" + vs.isPlanned());
+        //System.out.println("vs done:" + vs.isDone());
     }
-    
     public java.sql.Date stringToSqlDate(String date, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
         try {

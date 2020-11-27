@@ -40,6 +40,13 @@ public class EvalSheet {
         id = -1;
     }
 
+    /**
+    * Set the eval sheet java bean using the id from the db 
+    * 
+    *@param user Personal db user login
+    *@param pwd Personal db user password
+    *@param ident EvalSheet id 
+    **/
     public void setEvalSheetById(String user, String pwd, int ident) {
         try {
             DataServices dbs = new DataServices(user, pwd);
