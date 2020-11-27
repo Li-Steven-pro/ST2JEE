@@ -30,7 +30,7 @@
     </div>
     <div class="login-page">
         <div class="container-students the-containers" style="overflow-y:scroll">
-            <form name="GlobalForm" method="post" action="interns/update">
+            <form name="GlobalForm" method="post" action="interns">
                 <div class="yeet">
                     <h1 class="header_me"><c:out value="${fn:length(internsList)} etudiants"/></h1>
                 </div>

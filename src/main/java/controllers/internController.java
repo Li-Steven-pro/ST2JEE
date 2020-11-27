@@ -117,9 +117,8 @@ public class internController extends HttpServlet {
             session.setAttribute("internsList", internsList);
             request.setAttribute("internsList", internsList);
         }
-        response.sendRedirect(request.getContextPath()+ "/intern");
-        //request.getRequestDispatcher(request.getContextPath()+ LIST_INTERNS_VIEW_PATH).forward(request, response);
-        processRequest(request, response);
+        //response.sendRedirect(request.getContextPath()+ "/intern");
+        request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
     }
 
     /**

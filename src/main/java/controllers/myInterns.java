@@ -7,7 +7,11 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import middleware.auth;
 import middleware.parser;
+import model.EvalSheet;
 import model.Intern;
+import model.Mission;
+import model.Teacher;
+import model.VisitSheet;
 import static utils.CONSTANT.*;
-
+import utils.DataServices;
+import utils.QuerryManager;
 /**
  *
  * @author steve
@@ -83,7 +92,19 @@ public class myInterns extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        auth.isConnected(request,response);
+        int id = Integer.parseInt(request.getParameter("id_student"));
+        Intern intern = getInternFromId(request, id);
+        if (intern == null){
+            request.getRequestDispatcher(ERROR_PATH).forward(request, response);
+        }
+        UpdateInternFromRequest(intern,request);
+        HttpSession session = request.getSession();
+        Teacher User = (Teacher) session.getAttribute("User");
+        DataServices ds = new DataServices(User.getUser(), User.getPwd());
+        ds.selectQuery(QuerryManager.updateIntern(intern));
+        request.setAttribute("intern",intern);
+        request.getRequestDispatcher(INTERN_VIEW_PATH).forward(request, response);
     }
 
     /**
@@ -104,6 +125,52 @@ public class myInterns extends HttpServlet {
                 return intern;
             }
         }
+        return null;
+    }
+
+    private void UpdateInternFromRequest(Intern intern, HttpServletRequest request) {
+        intern.setGroup(request.getParameter("GroupStudent"));
+        intern.setLast_name(request.getParameter("LastNameStudent"));
+//      in.setFirst_name(request.getParameter("FirstNameStudent
+        intern.setAddress(request.getParameter("Adresse"));
+//        in.setSkills(request.getParameter("Skills"));
+//        in.setLinkedin(request.getParameter("Linkedin"));
+//        in.setBirthday(stringToSqlDate(request.getParameter("Birthday"),"yyyy-mm-dd"));
+        Mission mi = intern.getMission();
+//        mi.setId(Integer.parseInt(request.getParameter("id_mission")));
+//        mi.setYear(Integer.parseInt(request.getParameter("Year")));
+        mi.setStartDate(stringToSqlDate(request.getParameter("Debut"), "yyyy-mm-dd"));
+        mi.setEndDate(stringToSqlDate(request.getParameter("Fin"), "yyyy-mm-dd"));
+//        mi.setReport_title(request.getParameter("Report_title"));
+//        mi.setComment(request.getParameter("CommentMission"));
+//        mi.setMeetingInfo(request.getParameter("MettingInfo"));
+        mi.setSoutenance(null!=request.getParameter("soutenance" + intern.getId()));
+        System.out.println("mi soutenance:" + mi.isSoutenance() + "request " + request.getParameter("soutenance"));
+        EvalSheet es = mi.getEvalS();
+        System.out.println("es :" + es);
+//        es.setId(Integer.parseInt(request.getParameter("id_evalS")));
+//        es.setComment(request.getParameter("CommentEvalSheet"));
+        es.setGradeTech(Integer.parseInt(request.getParameter("NoteTech")));
+        es.setGradeCom(Integer.parseInt(request.getParameter("NoteCom")));
+//        es.setDone(Boolean.parseBoolean(request.getParameter("DoneEval")));
+        VisitSheet vs = mi.getVisitS();
+        System.out.println("vs :" + vs);
+//        vs.setId(Integer.parseInt(request.getParameter("id_visitS")));
+        vs.setPlanned(null!=request.getParameter("plannif"));
+        vs.setDone(null!=request.getParameter("faite"));
+        //intern.ShowConsole();
+        System.out.println("vs planned :" + vs.isPlanned());
+        System.out.println("vs done:" + vs.isDone());
+    }
+    
+    public java.sql.Date stringToSqlDate(String date, String format) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        try {
+            return new java.sql.Date(dateFormat.parse(date).getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(internController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Unformattable date");
+        };
         return null;
     }
 }

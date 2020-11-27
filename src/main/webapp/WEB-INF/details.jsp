@@ -54,8 +54,8 @@
                         <!-- form for a single intern-->
                         <tr style="overflow-y:scroll">
                             <td><input type="hidden" name="id_student" value="${intern.id}" />
-                                <input type="text" name="GroupStudent${intern.id}" value="${intern.group}" size="5"/></td><!-- String -->
-                            <td><input type="text" name="LastNameStudent${intern.id}" value="${intern.last_name}" style="margin-left:5px;"/></td><!-- String -->
+                                <input type="text" name="GroupStudent" value="${intern.group}" size="5"/></td><!-- String -->
+                            <td><input type="text" name="LastNameStudent" value="${intern.last_name}" style="margin-left:5px;"/></td><!-- String -->
                             <td><input type="checkbox" id="fiche_visite" name="fiche_visite${intern.id}"
                                        ${intern.mission.visitS!=null?'checked disabled="disabled"':''}/></td><!-- String -->
                             <td><input type="checkbox" id="fiche_eval" name="fiche_eval${intern.id}"
@@ -66,16 +66,17 @@
                                        ${intern.mission.visitS.planned!=null?'checked':''}/></td><!-- String -->
                             <td><input type="checkbox" id="faite" name="faite${intern.id}"
                                        ${intern.mission.visitS.done!=null?'checked':''}/></td><!-- String -->
-                            <td><input type="text" name="Debut${intern.id}" value="${intern.mission.startDate}" maxlength="10" size="10" placeholder="YYYY-MM-DD"/></td><!-- String -->
-                            <td><input type="text" name="Fin${intern.id}" value="${intern.mission.endDate}" maxlength="10" size="10" placeholder="YYYY-MM-DD"/></td><!-- String -->
-    <!--                        <td><input type="text" name="NomEntreprise${intern.id}" value="" /></td> String 
-                            <td><input type="text" name="Mds${intern.id}" value="" /></td> String -->
-                            <td><input type="text" name="Adresse${intern.id}" value="${intern.address}" /></td><!-- String -->
-                            <td><input type="text" name="NoteTech${intern.id}" value="${intern.mission.evalS.gradeTech}" maxlength="4" size="4"/></td><!-- String -->
-                            <td><input type="text" name="NoteCom${intern.id}" value="${intern.mission.evalS.gradeCom}" maxlength="4" size="4"/></td><!-- String -->
+                            <td><input type="text" name="Debut" value="${intern.mission.startDate}" maxlength="10" size="10" placeholder="YYYY-MM-DD"/></td><!-- String -->
+                            <td><input type="text" name="Fin" value="${intern.mission.endDate}" maxlength="10" size="10" placeholder="YYYY-MM-DD"/></td><!-- String -->
+    <!--                        <td><input type="text" name="NomEntreprise" value="" /></td> String 
+                            <td><input type="text" name="Mds" value="" /></td> String -->
+                            <td><input type="text" name="Adresse" value="${intern.address}" /></td><!-- String -->
+                            <td><input type="text" name="NoteTech" value="${intern.mission.evalS.gradeTech}" maxlength="4" size="4"/></td><!-- String -->
+                            <td><input type="text" name="NoteCom" value="${intern.mission.evalS.gradeCom}" maxlength="4" size="4"/></td><!-- String -->
                         </tr>
                     <!---->
                 </table>
+                <a href="<%=application.getContextPath()%>/interns" style="padding:-10px;" class="btn-submit_me" > Retour </a>
                 <input style="padding:-10px;" class="btn-submit_me" id= "button-submit" type="submit" name="UpdateAll" value="Update interns" />
             </form>
             </body>
