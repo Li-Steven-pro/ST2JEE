@@ -21,10 +21,10 @@
             <input type="text" name="search" />
             <input style="padding:-10px;" class="btn-submit_me" id= "button-submit" type="submit" name="search" value="Search"/>
         </form>
-        <form style="display: flex;padding:10px;" id= "searchbox" name="Actual_intern" method="post" action="internAddController">
-            <input class="btn-submit_me ccc" type="submit" name="Nouveau" value="Nouveau" />
+        <form style="padding:10px;" id= "searchbox" name="Actual_intern" method="post" action="internAddController">
+            <input style="padding:-10px;" class="btn-submit_me" id= "button-submit" type="submit" name="Nouveau" value="Nouveau" />
         </form>
-        <form style="display: flex;padding:10px;" name="LogOut" method="post" action="logout">
+        <form style="padding:10px;" id= "searchbox" name="LogOut" method="post" action="logout">
             <input style="padding:-10px;" class="btn-submit_me" id= "button-submit" type="submit" name="detail" value="Log Out"/>
         </form>
         <c:set var="Teacher" value="User" />
