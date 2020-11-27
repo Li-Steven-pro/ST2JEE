@@ -3,7 +3,7 @@
 -Requirement : 
 -**WAMP**
 -**Apache NetBeans IDE**
--**Server : Flassfish 5.1.0 with jdk1.8.0_271**
+-**Server : Glassfish 5.1.0 with jdk1.8.0_271**
 -**MySQL 5.7.28**
 
 -DL wamp depuis https://www.wampserver.com/
