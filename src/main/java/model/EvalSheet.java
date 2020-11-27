@@ -22,6 +22,7 @@ public class EvalSheet {
             = {"eval_sheet_id",
                 "comments_of_supervisor",
                 "grade_tech",
+                "grade_com",
                 "eval_sheet_done"};
     // eval_sheet_id
     private int id;

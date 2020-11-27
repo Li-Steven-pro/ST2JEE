@@ -163,7 +163,8 @@ public class QuerryManager {
         attributs.remove(0);
         String[] valuesEvalSheet = {evalS.getComment(),
             Integer.toString(evalS.getGradeTech()),
-            Integer.toString(evalS.getGradeCom())};
+            Integer.toString(evalS.getGradeCom()),
+            Boolean.toString(evalS.isDone())};
         valuesArray = new ArrayList(Arrays.asList(valuesEvalSheet));
         query += updateInsert(EvalSheet.getTable(), evalS.getId(), attributs, valuesArray);
 
