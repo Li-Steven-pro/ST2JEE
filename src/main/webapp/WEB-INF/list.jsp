@@ -65,8 +65,8 @@
                                        ${intern.mission.visitS.planned!=null?'checked':''}/></td><!-- String -->
                             <td><input type="checkbox" id="faite" name="faite${intern.id}"
                                        ${intern.mission.visitS.done!=null?'checked':''}/></td><!-- String -->
-                            <td><input type="text" name="Debut${intern.id}" value="${intern.mission.startDate}" maxlength="10" size="10"/></td><!-- String -->
-                            <td><input type="text" name="Fin${intern.id}" value="${intern.mission.endDate}" maxlength="10" size="10"/></td><!-- String -->
+                            <td><input type="text" name="Debut${intern.id}" value="${intern.mission.startDate}" maxlength="10" size="10" placeholder="YYYY-MM-DD"/></td><!-- String -->
+                            <td><input type="text" name="Fin${intern.id}" value="${intern.mission.endDate}" maxlength="10" size="10" placeholder="YYYY-MM-DD"/></td><!-- String -->
     <!--                        <td><input type="text" name="NomEntreprise${intern.id}" value="" /></td> String 
                             <td><input type="text" name="Mds${intern.id}" value="" /></td> String -->
                             <td><input type="text" name="Adresse${intern.id}" value="${intern.address}" /></td><!-- String -->

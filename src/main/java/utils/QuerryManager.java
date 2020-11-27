@@ -42,9 +42,9 @@ public class QuerryManager {
             value = "'1'";
         } else if (var.toUpperCase().equals("FALSE")) {
             value = "'0'";
-        }else if (var.length()==0){
+        } else if (var.length() == 0) {
             value = "''";
-        } else if (var.charAt(0) != '@'){
+        } else if (var.charAt(0) != '@') {
             value = "'" + var + "'";
         }
         return value;
@@ -55,6 +55,13 @@ public class QuerryManager {
             return "@" + tableName + "_id";
         }
         return Integer.toString(id);
+    }
+
+    public static String sqlDateToString(Date date) {
+        if (date == null) {
+            return null;
+        }
+        return date.toString();
     }
 
     public static String update(String tableName, int ID, ArrayList<String> attributs, ArrayList<String> values) {
@@ -172,8 +179,8 @@ public class QuerryManager {
         attributs = new ArrayList(Arrays.asList(Mission.getAttr()));
         attributs.remove(0);
         String[] valuesMission = {Integer.toString(mission.getYear()),
-            ((Date) mission.getStartDate()).toString(),
-            ((Date) mission.getEndDate()).toString(),
+            sqlDateToString(mission.getStartDate()),
+            sqlDateToString(mission.getEndDate()),
             mission.getReport_title(),
             mission.getComment(),
             mission.getMeetingInfo(),
@@ -193,7 +200,7 @@ public class QuerryManager {
             intern.getAddress(),
             intern.getSkills(),
             intern.getLinkedin(),
-            ((Date) intern.getBirthday()).toString(),
+            sqlDateToString(intern.getBirthday()),
             sqlSetId(Mission.getTable(), intern.getMission().getId())};
         valuesArray = new ArrayList(Arrays.asList(values));
         query += updateInsert(Intern.getTable(), intern.getId(), attributs, valuesArray);

@@ -161,7 +161,7 @@ public class internController extends HttpServlet {
 //        mi.setReport_title(request.getParameter("Report_title"));
 //        mi.setComment(request.getParameter("CommentMission"));
 //        mi.setMeetingInfo(request.getParameter("MettingInfo"));
-//        mi.setSoutenance(Boolean.parseBoolean(request.getParameter("Soutenance")));
+//        mi.setSoutenance(Boolean.parseBoolean(request.getParameter("soutenance")));
 
         EvalSheet es = new EvalSheet();
 //        es.setId(Integer.parseInt(request.getParameter("id_evalS")));
@@ -172,8 +172,8 @@ public class internController extends HttpServlet {
 
         VisitSheet vs = new VisitSheet();
 //        vs.setId(Integer.parseInt(request.getParameter("id_visitS")));
-//        vs.setPlanned(Boolean.parseBoolean(request.getParameter("PlannedVisit")));
-//        vs.setDone(Boolean.parseBoolean(request.getParameter("DoneVisit")));
+//        vs.setPlanned(Boolean.parseBoolean(request.getParameter("plannif$")));
+//        vs.setDone(Boolean.parseBoolean(request.getParameter("faite")));
 
         mi.setEvalS(es);
         mi.setVisitS(vs);
@@ -215,7 +215,7 @@ public class internController extends HttpServlet {
 //        mi.setReport_title(request.getParameter("Report_title"));
 //        mi.setComment(request.getParameter("CommentMission"));
 //        mi.setMeetingInfo(request.getParameter("MettingInfo"));
-//        mi.setSoutenance(Boolean.parseBoolean(request.getParameter("Soutenance")));
+        mi.setSoutenance(Boolean.parseBoolean(request.getParameter("soutenance" + intern.getId())));
 
         EvalSheet es = mi.getEvalS();
         System.out.println("es :" + es);
@@ -227,8 +227,8 @@ public class internController extends HttpServlet {
         VisitSheet vs = mi.getVisitS();
         System.out.println("vs :" + vs);
 //        vs.setId(Integer.parseInt(request.getParameter("id_visitS")));
-//        vs.setPlanned(Boolean.parseBoolean(request.getParameter("PlannedVisit")));
-//        vs.setDone(Boolean.parseBoolean(request.getParameter("DoneVisit")));
+        vs.setPlanned(Boolean.parseBoolean(request.getParameter("plannif" + intern.getId())));
+        vs.setDone(Boolean.parseBoolean(request.getParameter("faite" + intern.getId())));
         //intern.ShowConsole();
     }
 }
