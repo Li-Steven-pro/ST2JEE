@@ -15,4 +15,5 @@ public class CONSTANT {
     public static final String LOGIN_VIEW_PATH = VIEW_PATH + "login.jsp";
     public static final String LIST_INTERNS_VIEW_PATH = VIEW_PATH + "list.jsp";
     public static final String INTERN_VIEW_PATH = VIEW_PATH + "details.jsp";
+     public static final String ERROR_PATH = VIEW_PATH + "404.jsp";
 }
