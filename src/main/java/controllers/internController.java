@@ -65,28 +65,39 @@ public class internController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-//        Intern intern = loadIntern(request);
-//        request.setAttribute("intern", intern);
-//        request.getRequestDispatcher(INTERN_VIEW_PATH).forward(request, response);
-        if (request.getParameter("UpdateAll") != null) {
-            System.out.println("Controller Update all interns");
-            System.out.println(request.getParameter("id_student"));
-            System.out.println(request.getPathInfo());
-            HttpSession session = request.getSession();
-            ArrayList<Intern> internsList = (ArrayList<Intern>) session.getAttribute("internsList");
-            UpdateInternsList(internsList, request);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response){
+        try {
+            auth.isConnected(request, response);
+        //        Intern intern = loadIntern(request);
+        //        request.setAttribute("intern", intern);
+        //        request.getRequestDispatcher(INTERN_VIEW_PATH).forward(request, response);
+            if (request.getParameter("UpdateAll") != null) {
+                System.out.println("Controller Update all interns");
+                System.out.println(request.getParameter("id_student"));
+                System.out.println(request.getPathInfo());
+                HttpSession session = null;
+                try {
+                    session = request.getSession();
+                }catch(java.lang.IllegalStateException ex){
+                    response.sendRedirect("login");
+                }
+                ArrayList<Intern> internsList = (ArrayList<Intern>) session.getAttribute("internsList");
+                UpdateInternsList(internsList, request);
 
-            Teacher User = (Teacher) session.getAttribute("User");
-            DataServices ds = new DataServices(User.getUser(), User.getPwd());
-            internsList.forEach(intern -> {ds.modifQuery(QuerryManager.updateIntern(intern));});
-            //internsList = User.getAllInterns();
-            session.setAttribute("internsList", internsList);
-            request.setAttribute("internsList", internsList);
+                Teacher User = (Teacher) session.getAttribute("User");
+                DataServices ds = new DataServices(User.getUser(), User.getPwd());
+                internsList.forEach(intern -> {ds.modifQuery(QuerryManager.updateIntern(intern));});
+                //internsList = User.getAllInterns();
+                session.setAttribute("internsList", internsList);
+                request.setAttribute("internsList", internsList);
+            }
+            //response.sendRedirect(request.getContextPath()+ "/intern");
+            request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(internController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(internController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //response.sendRedirect(request.getContextPath()+ "/intern");
-        request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
     }
 
     /**
