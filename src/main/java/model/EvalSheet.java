@@ -34,7 +34,10 @@ public class EvalSheet {
 
     private boolean done;
     // eval_sheet_done
-
+    
+    public EvalSheet(){
+        id = -1;
+    }
     public void setEvalSheetById(DataServices dbs, int ident) {
         try {
             ResultSet evalsheetRS = dbs.selectQuery("SELECT * from " + EvalSheet.getTable() + " WHERE eval_sheet_id = '" + Integer.toString(ident) + "';");

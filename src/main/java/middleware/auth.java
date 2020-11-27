@@ -10,10 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Teacher;
+import static utils.CONSTANT.LIST_INTERNS_VIEW_PATH;
 import utils.DataServices;
 
 /**
@@ -22,60 +24,33 @@ import utils.DataServices;
  */
 public class auth {
     
-    private static boolean isConnected(HttpServletRequest request,HttpSession session){
-        if (session.getAttribute("User")!= null){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    private static boolean hasAccess(HttpServletRequest request,HttpSession session){
-        if (auth.isConnected(request,session) == true){
-            Teacher teacher = (Teacher) session.getAttribute("User");
-            DataServices dbs = new DataServices(teacher.getUser(), teacher.getPwd());
-//            ResultSet rs = dbs.selectQuery("SELECT * from teacher WHERE login = '" + user + "' AND password = '" + pwd + "';");
-            if (dbs.getConnection() != null) {
-                return true;
-            }
-            else{
-                return false;
-            }
-        }else{
-            return false; 
-        }
-    }
-    private static boolean hasAccessIntern(HttpServletRequest request, int id){
+    public static void isConnected(HttpServletRequest request,HttpServletResponse response) {
         HttpSession session = request.getSession();
-        if (auth.hasAccess(request, session) == true){
-            Teacher teacher = (Teacher) session.getAttribute("User");
-            DataServices dbs = new DataServices(teacher.getUser(), teacher.getPwd());
-            ResultSet rs = dbs.selectQuery("SELECT * from intern WHERE teacher_id = '" + teacher.getId() + "' AND info_intern_id = '" + id + "';");
+        if (session.getAttribute("User") == null){
             try {
-                if (rs.next()== true){
-                    return true;
-                }
-            } catch (SQLException ex) {
+                session.invalidate();
+                response.sendRedirect("login");
+            } catch (IOException ex) {
                 Logger.getLogger(auth.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return false;
     }
     
-    public static void accessController(HttpServletRequest request,HttpServletResponse response) 
-            throws IOException{
+    public static void hasAccessIntern(HttpServletRequest request, HttpServletResponse response,int id){
         HttpSession session = request.getSession();
-        if(auth.hasAccess(request, session) == false){
-            session.invalidate();
-            response.sendRedirect("login");
+        Teacher teacher = (Teacher) session.getAttribute("User");
+        DataServices dbs = new DataServices(teacher.getUser(), teacher.getPwd());
+        ResultSet rs = dbs.selectQuery("SELECT * from intern WHERE teacher_id = '" + teacher.getId() + "' AND info_intern_id = '" + id + "';");
+        try {
+            if (rs.next() == true){}
+            else{
+                request.setAttribute("internsList", session.getAttribute("internsList"));
+                request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
+            }
+        } catch (SQLException | ServletException | IOException ex) {
+            Logger.getLogger(auth.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public static void accessControllerForIntern(HttpServletRequest request,HttpServletResponse response, int id)
-            throws IOException{
-        HttpSession session = request.getSession();
-        if(auth.hasAccessIntern(request,id) == false){
-            session.invalidate();
-            response.sendRedirect("login");
-        }
-    }
+    
 }

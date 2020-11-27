@@ -70,7 +70,7 @@ public class login extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("User", User);
             session.setAttribute("internsList", User.getAllInterns());
-            request.setAttribute("internsList", User.getAllInterns());
+            request.setAttribute("internsList", session.getAttribute("internsList"));
             request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
         } else {
             request.setAttribute("errMsg", DeniedMsg);

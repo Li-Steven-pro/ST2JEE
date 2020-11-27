@@ -28,6 +28,9 @@ public class VisitSheet {
     // visit_done
     private boolean done; 
     
+    public VisitSheet(){
+        id = -1;
+    }
     public static String[] getAttr() {
         return attr;
     }

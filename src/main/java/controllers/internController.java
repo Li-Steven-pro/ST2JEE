@@ -27,6 +27,8 @@ import model.Mission;
 import model.Teacher;
 import model.VisitSheet;
 import static utils.CONSTANT.*;
+import utils.DataServices;
+import utils.QuerryManager;
 
 /**
  *
@@ -108,15 +110,25 @@ public class internController extends HttpServlet {
 //        Intern intern = loadIntern(request);
 //        request.setAttribute("intern", intern);
 //        request.getRequestDispatcher(INTERN_VIEW_PATH).forward(request, response);
-        if(request.getParameter("UpdateAll") != null){
+        if (request.getParameter("UpdateAll") != null) {
             System.out.println("Controller Update all interns");
             System.out.println(request.getParameter("id_student"));
             System.out.println(request.getPathInfo());
             HttpSession session = request.getSession();
-            ArrayList<Intern> internsList = (ArrayList<Intern>)session.getAttribute("internsList");
-            UpdateInternsList(internsList,request);
+            ArrayList<Intern> internsList = (ArrayList<Intern>) session.getAttribute("internsList");
+            UpdateInternsList(internsList, request);
+            
+            Teacher User = (Teacher) session.getAttribute("User");
+            DataServices ds = new DataServices(User.getUser(), User.getPwd());
+            for (Intern intern : internsList) {
+                ds.selectQuery(QuerryManager.updateIntern(intern));
+            }
+            //internsList = User.getAllInterns();
+            session.setAttribute("internsList", internsList);
+            request.setAttribute("internsList", internsList);
         }
-        processRequest(request, response);
+        request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
+        //processRequest(request, response);
     }
 
     /**
@@ -129,22 +141,22 @@ public class internController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    public Intern loadIntern(HttpServletRequest request,int id) {
+    public Intern loadIntern(HttpServletRequest request, int id) {
 
         Intern in = new Intern();
-        in.setGroup(request.getParameter("GroupStudent"+id));
-        in.setLast_name(request.getParameter("LastNameStudent"+id));
+        in.setGroup(request.getParameter("GroupStudent" + id));
+        in.setLast_name(request.getParameter("LastNameStudent" + id));
 //        in.setFirst_name(request.getParameter("FirstNameStudent"));
         in.setId(id);
-        in.setAddress(request.getParameter("Adresse"+id));
+        in.setAddress(request.getParameter("Adresse" + id));
 //        in.setSkills(request.getParameter("Skills"));
 //        in.setLinkedin(request.getParameter("Linkedin"));
 //        in.setBirthday(stringToSqlDate(request.getParameter("Birthday"),"yyyy-mm-dd"));
         Mission mi = new Mission();
 //        mi.setId(Integer.parseInt(request.getParameter("id_mission")));
 //        mi.setYear(Integer.parseInt(request.getParameter("Year")));
-        mi.setStartDate(stringToSqlDate(request.getParameter("Debut"+id), "yyyy-mm-dd"));
-        mi.setEndDate(stringToSqlDate(request.getParameter("Fin"+id), "yyyy-mm-dd"));
+        mi.setStartDate(stringToSqlDate(request.getParameter("Debut" + id), "yyyy-mm-dd"));
+        mi.setEndDate(stringToSqlDate(request.getParameter("Fin" + id), "yyyy-mm-dd"));
 //        mi.setReport_title(request.getParameter("Report_title"));
 //        mi.setComment(request.getParameter("CommentMission"));
 //        mi.setMeetingInfo(request.getParameter("MettingInfo"));
@@ -153,8 +165,8 @@ public class internController extends HttpServlet {
         EvalSheet es = new EvalSheet();
 //        es.setId(Integer.parseInt(request.getParameter("id_evalS")));
 //        es.setComment(request.getParameter("CommentEvalSheet"));
-        es.setGradeTech(Integer.parseInt(request.getParameter("NoteTech"+id)));
-        es.setGradeCom(Integer.parseInt(request.getParameter("NoteCom"+id)));
+        es.setGradeTech(Integer.parseInt(request.getParameter("NoteTech" + id)));
+        es.setGradeCom(Integer.parseInt(request.getParameter("NoteCom" + id)));
 //        es.setDone(Boolean.parseBoolean(request.getParameter("DoneEval")));
 
         VisitSheet vs = new VisitSheet();
@@ -180,37 +192,39 @@ public class internController extends HttpServlet {
     }
 
     private void UpdateInternsList(ArrayList<Intern> internsList, HttpServletRequest request) {
-        for (Intern intern : internsList) { 
-            UpdateInternFromRequest(intern,request);
+        for (Intern intern : internsList) {
+            UpdateInternFromRequest(intern, request);
         }
     }
 
     private void UpdateInternFromRequest(Intern intern, HttpServletRequest request) {
         intern.ShowConsole();
-        intern.setGroup(request.getParameter("GroupStudent"+intern.getId()));
-        intern.setLast_name(request.getParameter("LastNameStudent"+intern.getId()));
+        intern.setGroup(request.getParameter("GroupStudent" + intern.getId()));
+        intern.setLast_name(request.getParameter("LastNameStudent" + intern.getId()));
 //      in.setFirst_name(request.getParameter("FirstNameStudent
-        intern.setAddress(request.getParameter("Adresse"+intern.getId()));
+        intern.setAddress(request.getParameter("Adresse" + intern.getId()));
 //        in.setSkills(request.getParameter("Skills"));
 //        in.setLinkedin(request.getParameter("Linkedin"));
 //        in.setBirthday(stringToSqlDate(request.getParameter("Birthday"),"yyyy-mm-dd"));
         Mission mi = intern.getMission();
 //        mi.setId(Integer.parseInt(request.getParameter("id_mission")));
 //        mi.setYear(Integer.parseInt(request.getParameter("Year")));
-        mi.setStartDate(stringToSqlDate(request.getParameter("Debut"+intern.getId()), "yyyy-mm-dd"));
-        mi.setEndDate(stringToSqlDate(request.getParameter("Fin"+intern.getId()), "yyyy-mm-dd"));
+        mi.setStartDate(stringToSqlDate(request.getParameter("Debut" + intern.getId()), "yyyy-mm-dd"));
+        mi.setEndDate(stringToSqlDate(request.getParameter("Fin" + intern.getId()), "yyyy-mm-dd"));
 //        mi.setReport_title(request.getParameter("Report_title"));
 //        mi.setComment(request.getParameter("CommentMission"));
 //        mi.setMeetingInfo(request.getParameter("MettingInfo"));
 //        mi.setSoutenance(Boolean.parseBoolean(request.getParameter("Soutenance")));
 
         EvalSheet es = mi.getEvalS();
+        System.out.println("es :" + es);
 //        es.setId(Integer.parseInt(request.getParameter("id_evalS")));
 //        es.setComment(request.getParameter("CommentEvalSheet"));
-        es.setGradeTech(Integer.parseInt(request.getParameter("NoteTech"+intern.getId())));
-        es.setGradeCom(Integer.parseInt(request.getParameter("NoteCom"+intern.getId())));
+        es.setGradeTech(Integer.parseInt(request.getParameter("NoteTech" + intern.getId())));
+        es.setGradeCom(Integer.parseInt(request.getParameter("NoteCom" + intern.getId())));
 //        es.setDone(Boolean.parseBoolean(request.getParameter("DoneEval")));
         VisitSheet vs = mi.getVisitS();
+        System.out.println("vs :" + vs);
 //        vs.setId(Integer.parseInt(request.getParameter("id_visitS")));
 //        vs.setPlanned(Boolean.parseBoolean(request.getParameter("PlannedVisit")));
 //        vs.setDone(Boolean.parseBoolean(request.getParameter("DoneVisit")));
