@@ -19,14 +19,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import static middleware.auth.accessController;
+import middleware.auth;
+import middleware.parser;
 import model.EvalSheet;
 import model.Intern;
 import model.Mission;
 import model.Teacher;
 import model.VisitSheet;
-import static utils.CONSTANT.INTERN_VIEW_PATH;
-import static utils.CONSTANT.LIST_INTERNS_VIEW_PATH;
+import static utils.CONSTANT.*;
 
 /**
  *
@@ -70,11 +70,28 @@ public class internController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        System.out.println(request.getPathInfo());
-        accessController(request,response);
-        processRequest(request, response);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response){
+        try {
+            auth.isConnected(request,response);
+            String[] parsingUrl = parser.InternParseUrl(request);
+            if(parsingUrl == null){
+                HttpSession session = request.getSession();
+                request.setAttribute("internsList", session.getAttribute("internsList"));
+                request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
+            }
+            else{
+                try{
+                    Integer.parseInt(parsingUrl[1]);
+                } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex)
+                {
+                    response.sendRedirect(request.getContextPath()+ "/intern");
+                    return;
+                }
+            }
+            //processRequest(request, response);
+        } catch (ServletException | IOException ex) {
+            Logger.getLogger(internController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -197,6 +214,6 @@ public class internController extends HttpServlet {
 //        vs.setId(Integer.parseInt(request.getParameter("id_visitS")));
 //        vs.setPlanned(Boolean.parseBoolean(request.getParameter("PlannedVisit")));
 //        vs.setDone(Boolean.parseBoolean(request.getParameter("DoneVisit")));
-        intern.ShowConsole();
+        //intern.ShowConsole();
     }
 }
