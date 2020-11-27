@@ -19,13 +19,66 @@ import model.VisitSheet;
  */
 public class QuerryManager {
 
+    /**
+     * Generate an INSERT query
+     *
+     * @param tableName The name of the table we want to INSERT in
+     * @param attributs The list of the table attributs names
+     * @param values The values to INSERT into the table
+     * @return an insert query in String format
+     */
     public static String insertQuery(String tableName, ArrayList<String> attributs, ArrayList<String> values) {
-        String querry = "INSERT INTO `ST2EEDB`.`" + tableName + "`" + paranthesesAttr(attributs) + "\n";
-        querry += " VALUES " + parantheses(values);
-        querry += ";\nSET @" + tableName + "_id = LAST_INSERT_ID();";
+        String query = "INSERT INTO `ST2EEDB`.`" + tableName + "`" + paranthesesAttr(attributs) + "\n";
+        query += " VALUES " + parantheses(values);
+        query += ";\nSET @" + tableName + "_id = LAST_INSERT_ID();";
+        return query;
+    }
+
+    /**
+     * Generate an UPDATE query
+     *
+     * @param tableName The name of the table we want to UPDATE
+     * @param ID The id of the row to UPDATE
+     * @param attributs The list of the table attributs names
+     * @param values The UPDATEd values to insert in the table
+     * @return an update query in String format
+     */
+    public static String update(String tableName, int ID, ArrayList<String> attributs, ArrayList<String> values) {
+        String querry = "UPDATE `ST2EEDB`.`" + tableName + "` SET\n";
+        for (int i = 0; i < attributs.size() - 1; i++) {
+            querry += sqlAttr(attributs.get(i)) + " = " + sqlVar(values.get(i)) + ",\n";
+        }
+        if (0 < attributs.size()) {
+            querry += sqlAttr(attributs.get(attributs.size() - 1)) + " = ";
+            querry += sqlVar(values.get(attributs.size() - 1)) + "\n";
+        }
+        querry += "WHERE (`" + tableName + "_id` = '" + ID + "');\n";
         return querry;
     }
 
+    /**
+     * Generate an UPDATE/INSERT query depending if the row id is valide (ID>0)
+     *
+     * @param tableName The name of the table we want to UPDATE
+     * @param ID The id of the row to UPDATE
+     * @param attributs The list of the table attributs names
+     * @param values The UPDATEd values to insert in the table
+     * @return an update query in String format
+     */
+    public static String updateInsert(String tableName, int ID, ArrayList<String> attributs, ArrayList<String> values) {
+        if (ID < 0) {
+            return insertQuery(tableName, attributs, values);
+        } else {
+            return update(tableName, ID, attributs, values);
+        }
+    }
+
+    /**
+     * Format a variable into an sql attribut
+     *
+     * @param attr the variable
+     * @return `attr` if not an sql variable, attr else
+     */
     public static String sqlAttr(String attr) {
         if (attr.charAt(0) != '@') {
             return '`' + attr + '`';
@@ -34,6 +87,12 @@ public class QuerryManager {
         }
     }
 
+    /**
+     * Format a variable in a way SQL can understand it
+     *
+     * @param var The variable to format
+     * @return the variable formatted for SQL as String
+     */
     public static String sqlVar(String var) {
         String value = var;
         if (var == null) {
@@ -50,6 +109,13 @@ public class QuerryManager {
         return value;
     }
 
+    /**
+     * If a row don't exist (id<0), replace the id by a SQL variable
+     *
+     * @param tableName The name of the table
+     * @param id The id of the row
+     * @return id if valid, "tableName"_id if not
+     */
     public static String sqlSetId(String tableName, int id) {
         if (id < 0) {
             return "@" + tableName + "_id";
@@ -57,6 +123,13 @@ public class QuerryManager {
         return Integer.toString(id);
     }
 
+    /**
+     * Convert a sql.date to String, return null if null. Used to avoid
+     * exceptions.
+     *
+     * @param date The date to convert
+     * @return the date in string format if not null, else null
+     */
     public static String sqlDateToString(Date date) {
         if (date == null) {
             return null;
@@ -64,27 +137,12 @@ public class QuerryManager {
         return date.toString();
     }
 
-    public static String update(String tableName, int ID, ArrayList<String> attributs, ArrayList<String> values) {
-        String querry = "UPDATE `ST2EEDB`.`" + tableName + "` SET\n";
-        for (int i = 0; i < attributs.size() - 1; i++) {
-            querry += sqlAttr(attributs.get(i)) + " = " + sqlVar(values.get(i)) + ",\n";
-        }
-        if (0 < attributs.size()) {
-            querry += sqlAttr(attributs.get(attributs.size() - 1)) + " = ";
-            querry += sqlVar(values.get(attributs.size() - 1)) + "\n";
-        }
-        querry += "WHERE (`" + tableName + "_id` = '" + ID + "');\n";
-        return querry;
-    }
-
-    public static String updateInsert(String tableName, int ID, ArrayList<String> attributs, ArrayList<String> values) {
-        if (ID < 0) {
-            return insertQuery(tableName, attributs, values);
-        } else {
-            return update(tableName, ID, attributs, values);
-        }
-    }
-
+    /**
+     * Surround by parantheses a list of elements
+     *
+     * @param elements The list of attributs
+     * @return a String like this: (element[1], elements[2], ...)
+     */
     public static String parantheses(ArrayList<String> elements) {
         String par = "(";
         for (int i = 0; i < elements.size() - 1; i++) {
@@ -97,6 +155,12 @@ public class QuerryManager {
         return par;
     }
 
+    /**
+     * Surround by parantheses a list of elements in ` `
+     *
+     * @param elements The list of attributs
+     * @return a String like this: (`element[1]`, `elements[2]`, ...)
+     */
     public static String paranthesesAttr(ArrayList<String> elements) {
         String par = "(";
         for (int i = 0; i < elements.size() - 1; i++) {
@@ -109,47 +173,13 @@ public class QuerryManager {
         return par;
     }
 
-    public static String paranthesesAttrValues(String[] elements) {
-        String par = "(";
-        for (int i = 0; i < elements.length - 1; i++) {
-            par += sqlAttr(elements[i]) + ",";
-        }
-        if (1 < elements.length) {
-            par += sqlAttr(elements[elements.length - 1]);
-        }
-        par += ")";
-        return par;
-    }
-
-    public static String transaction(
-            ArrayList<String> val_visit_sheet,
-            ArrayList<String> val_eval_sheet,
-            ArrayList<String> val_mission,
-            ArrayList<String> val_intern,
-            ArrayList<String> val_info_intern) {
-        String query = "START TRANSACTION;\n"
-                + "INSERT INTO visit_sheet " + paranthesesAttrValues(VisitSheet.getAttr()) + "\n"
-                + "  VALUES" + parantheses(val_visit_sheet) + ";\n"
-                + "SET @visit_sheet_id = LAST_INSERT_ID();\n"
-                + "\n"
-                + "INSERT INTO eval_sheet " + paranthesesAttrValues(EvalSheet.getAttr()) + " \n"
-                + "  VALUES" + parantheses(val_visit_sheet) + ";\n"
-                + "SET @eval_sheet_id = LAST_INSERT_ID();\n"
-                + "\n"
-                + "INSERT INTO mission " + paranthesesAttrValues(Mission.getAttr()) + " \n"
-                + "  VALUES" + parantheses(val_mission) + ";\n"
-                + "SET @mission_id = LAST_INSERT_ID();\n"
-                + "\n"
-                + "INSERT INTO info_intern " + paranthesesAttrValues(Intern.getAttr()) + "\n"
-                + "  VALUES" + parantheses(val_info_intern) + ";\n"
-                + "SET @intern_info_id = LAST_INSERT_ID();\n"
-                + "\n"
-                + "INSERT INTO intern " + paranthesesAttrValues(Intern.getAttr()) + " \n"
-                + "  VALUES" + parantheses(val_intern) + ";\n"
-                + "COMMIT;\n";
-        return query;
-    }
-
+    /**
+     * Generate a Transaction Query to update an internship info. Create lacking
+     * rows when necessary.
+     *
+     * @param intern the internship to update
+     * @return the Transaction Query to update an internship as a String
+     */
     public static String updateIntern(Intern intern) {
         ArrayList<String> attributs;
         ArrayList<String> valuesArray;
