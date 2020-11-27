@@ -12,7 +12,7 @@
 --
 -- Detruit les utilisateurs 
 --
-
+/*
 DROP USER 'adm'@'localhost';
 DROP USER 'Pixel'@'localhost';
 DROP USER 'Suz'@'localhost';
@@ -20,7 +20,7 @@ DROP USER 'Rob'@'localhost';
 DROP USER 'Eliz'@'localhost';
 DROP USER 'Edw'@'localhost';
 DROP USER 'Norm'@'localhost';
-
+*/
 -- --------------------------------------------------------
 
 --

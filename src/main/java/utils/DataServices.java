@@ -36,6 +36,12 @@ public class DataServices {
         return user;
     }
 
+    /**
+     * Constructor
+     *
+     * @param user The database user login
+     * @param pwd The database user password
+     */
     public DataServices(String user, String pwd) {
         try {
             prop = new Properties();
@@ -50,6 +56,11 @@ public class DataServices {
         }
     }
 
+    /**
+     * Connect to database.
+     *
+     * @return a database connection using user & pwd
+     */
     public Connection getConnection() {
         try {
             // Add driver
@@ -63,8 +74,15 @@ public class DataServices {
 
     }
 
+    /**
+     * Execute a SELECT Query
+     *
+     * @param query the SELECT query to execute
+     * @return the result of the SELECT query
+     */
     public ResultSet selectQuery(String query) {
         ResultSet rs = null;
+        // Clean connexion
         try {
             if (conn != null) {
                 conn.close();
@@ -72,6 +90,7 @@ public class DataServices {
         } catch (SQLException ex) {
             Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
         }
+        // Attempt connexion
         try {
             conn = this.getConnection();
             stmt = conn.createStatement();
@@ -82,8 +101,15 @@ public class DataServices {
         return rs;
     }
 
+    /**
+     * Execute a Query to change the database (INSERT, UPDATE, ...)
+     *
+     * @param query the Query to execute
+     * @return the number of row affected
+     */
     public int modifQuery(String query) {
         int rs = 0;
+        // Clean connexion
         try {
             if (conn != null) {
                 conn.close();
@@ -91,6 +117,7 @@ public class DataServices {
         } catch (SQLException ex) {
             Logger.getLogger(DataServices.class.getName()).log(Level.SEVERE, null, ex);
         }
+        // Attempt connexion
         try {
             conn = this.getConnection();
             stmt = conn.createStatement();

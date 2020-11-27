@@ -53,6 +53,7 @@
                         <td>Adresse</td>
                         <td>Note tech</td>
                         <td>Note comm</td>
+                        <td><input style="padding:-10px;" class="btn-submit_me" id= "button-submit" type="submit" name="UpdateAll" value="Update interns" /></td>
                     </tr>
                     <!-- form for a single intern-->
                     <c:forEach items="${internsList}" var="intern">

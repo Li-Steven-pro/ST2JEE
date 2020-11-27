@@ -3,7 +3,9 @@
 -Installation wamp
 
 -connexion au serveur
--création de la database
+-importer la database en executant les requètes de DatabaseJEE.sql
+	-si vous recharger DatabaseJEE.sql, 
+		sortez des commentaires les DROP USER en début de fichier.
 -création d’un user
 
 -ouvrir Apache NetBeans IDE
