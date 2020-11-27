@@ -36,7 +36,6 @@ public class QuerryManager {
 
     public static String sqlVar(String var) {
         String value = var;
-        System.out.println("sqlVar: " + var);
         if (var == null) {
             value = "NULL";
         } else if (var.toUpperCase().equals("TRUE")) {
@@ -48,7 +47,6 @@ public class QuerryManager {
         } else if (var.charAt(0) != '@'){
             value = "'" + var + "'";
         }
-        System.out.println("sqlVar Result: " + value);
         return value;
     }
 
@@ -151,7 +149,6 @@ public class QuerryManager {
         Mission mission = intern.getMission();
         EvalSheet evalS = mission.getEvalS();
         VisitSheet visitS = mission.getVisitS();
-        System.out.println("Mission.VisitS.ID:" + mission.getVisitS());
         // Start Query
         String query = "START TRANSACTION;\n";
         // Update Eval Sheet
@@ -203,7 +200,7 @@ public class QuerryManager {
 
         // End Query
         query += "COMMIT;\n";
-        System.out.println(query);
+        //System.out.println(query);
         return query;
     }
 }
