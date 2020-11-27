@@ -58,15 +58,15 @@
                                 <input type="text" name="GroupStudent${intern.id}" value="${intern.group}" size="5"/></td><!-- String -->
                             <td><input type="text" name="LastNameStudent${intern.id}" value="${intern.last_name}" style="margin-left:5px;"/></td><!-- String -->
                             <td><input type="checkbox" id="fiche_visite" name="fiche_visite${intern.id}"
-                                       ${intern.mission.visitS!=null?'checked disabled="disabled"':''}/></td><!-- String -->
+                                       ${intern.mission.visitS!=null?'checked disabled="disabled"':'unchecked'}/></td><!-- String -->
                             <td><input type="checkbox" id="fiche_eval" name="fiche_eval${intern.id}"
-                                       ${intern.mission.evalS!=null?'checked disabled="disabled"':''}/></td><!-- String -->
+                                       ${intern.mission.evalS!=null?'checked disabled="disabled"':'unchecked'}/></td><!-- String -->
                             <td><input type="checkbox" id="soutenance" name="soutenance${intern.id}" 
-                                       ${intern.mission.soutenance!=null?'checked':''}/></td><!-- String -->
+                                       ${intern.mission.soutenance?'checked':'unchecked'}/></td><!-- String -->
                             <td><input type="checkbox" id="plannif" name="plannif${intern.id}" 
-                                       ${intern.mission.visitS.planned!=null?'checked':''}/></td><!-- String -->
+                                       ${intern.mission.visitS.planned?'checked':'unchecked'}/></td><!-- String -->
                             <td><input type="checkbox" id="faite" name="faite${intern.id}"
-                                       ${intern.mission.visitS.done!=null?'checked':''}/></td><!-- String -->
+                                       ${intern.mission.visitS.done?'checked':'unchecked'}/></td><!-- String -->
                             <td><input type="text" name="Debut${intern.id}" value="${intern.mission.startDate}" maxlength="10" size="10" placeholder="YYYY-MM-DD"/></td><!-- String -->
                             <td><input type="text" name="Fin${intern.id}" value="${intern.mission.endDate}" maxlength="10" size="10" placeholder="YYYY-MM-DD"/></td><!-- String -->
     <!--                        <td><input type="text" name="NomEntreprise${intern.id}" value="" /></td> String 
