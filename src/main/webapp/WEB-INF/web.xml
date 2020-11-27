@@ -28,14 +28,14 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>myInterns</servlet-name>
-        <url-pattern>/myInterns</url-pattern>
+        <url-pattern>/intern</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login</welcome-file>
     </welcome-file-list>
     <servlet-mapping>
         <servlet-name>internController</servlet-name>
-        <url-pattern>/intern/*</url-pattern>
+        <url-pattern>/interns</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>logout</servlet-name>

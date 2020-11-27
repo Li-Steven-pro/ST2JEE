@@ -72,28 +72,18 @@ public class internController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response){
-        try {
-            auth.isConnected(request,response);
-            String[] parsingUrl = parser.InternParseUrl(request);
-            if(parsingUrl == null){
-                HttpSession session = request.getSession();
-                request.setAttribute("internsList", session.getAttribute("internsList"));
-                request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
-            }
-            else{
-                try{
-                    Integer.parseInt(parsingUrl[1]);
-                } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex)
-                {
-                    response.sendRedirect(request.getContextPath()+ "/intern");
-                    return;
-                }
-            }
-            //processRequest(request, response);
-        } catch (ServletException | IOException ex) {
-            Logger.getLogger(internController.class.getName()).log(Level.SEVERE, null, ex);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException{
+        auth.isConnected(request,response);
+        HttpSession session = request.getSession();
+        List<Intern> internList =  (ArrayList<Intern>) session.getAttribute("internsList");
+        if (internList == null){
+            Teacher teacher = (Teacher) session.getAttribute("User");
+            internList = teacher.getAllInterns();
+            session.setAttribute("internsList", internList);
         }
+        request.setAttribute("internsList",internList);
+        request.getRequestDispatcher(LIST_INTERNS_VIEW_PATH).forward(request, response);
     }
 
     /**

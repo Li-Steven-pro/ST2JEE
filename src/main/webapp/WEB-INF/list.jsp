@@ -30,7 +30,7 @@
     </div>
     <div class="login-page">
         <div class="container-students the-containers" style="overflow-y:scroll">
-            <form name="GlobalForm" method="post" action="intern/update">
+            <form name="GlobalForm" method="post" action="interns/update">
                 <div class="yeet">
                     <h1 class="header_me"><c:out value="${fn:length(internsList)} etudiants"/></h1>
                 </div>
@@ -74,7 +74,7 @@
                             <td><input type="text" name="Adresse${intern.id}" value="${intern.address}" /></td><!-- String -->
                             <td><input type="text" name="NoteTech${intern.id}" value="${intern.mission.evalS.gradeTech}" maxlength="4" size="4"/></td><!-- String -->
                             <td><input type="text" name="NoteCom${intern.id}" value="${intern.mission.evalS.gradeCom}" maxlength="4" size="4"/></td><!-- String -->
-                            <td><a href="<%=application.getContextPath()%>/intern/${intern.id}"/> <button style="padding:-10px;" class="btn-submit_me" id= "button-submit" type="button">Details</button></a></td>
+                            <td><a href="<%=application.getContextPath()%>/intern?id=${intern.id}"/> <button style="padding:-10px;" class="btn-submit_me" id= "button-submit" type="button">Details</button></a></td>
                         </tr>
                     </c:forEach>
                     <!---->
