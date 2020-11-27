@@ -1,4 +1,11 @@
-# M1 - JEE Project : InternsSuper visi onSolution
+# M1 - JEE Project : Interns Supervision Solution
+
+-Requirement : 
+-**WAMP**
+-**Apache NetBeans IDE**
+-**Server : Flassfish 5.1.0 with jdk1.8.0_271**
+-**MySQL 5.7.28**
+
 -DL wamp depuis https://www.wampserver.com/
 -Installation wamp
 
@@ -25,14 +32,8 @@ services -> databases -> MySQL server atlocalhost:3306 ->  connect
 puis
 services -> databases -> MySQL server atlocalhost:3306 -> st2eedb -> connect
 
--mettre dans le pom.xml dans les dependencies :
-
-<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.22</version>
-</dependency>
+-les dépendences supplémentaires qui seront installées par maven sont : 
+-mysql-connector-java 
 
 -faire clic droit sur le projet puis “Build with dependencies”
 
